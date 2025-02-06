@@ -1,0 +1,9 @@
+.git/
+bin/
+dist/
+lib/
+node_modules/
+packages/api/lib/
+
+package-lock.json
+pnpm-lock.yaml

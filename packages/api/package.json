@@ -1,0 +1,30 @@
+{
+  "name": "@wrtnlabs/connector-hive-api",
+  "version": "0.1.0",
+  "description": "connector-hive api",
+  "main": "lib/index.js",
+  "module": "lib/index.mjs",
+  "typings": "lib/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wrtnlabs/connector-hive"
+  },
+  "author": "Shrimp <shrimp@wrtn.io>",
+  "license": "AGPL-3.0-only",
+  "bugs": {
+    "url": "https://github.com/wrtnlabs/connector-hive/issues"
+  },
+  "homepage": "https://github.com/wrtnlabs/connector-hive",
+  "files": [
+    "lib",
+    "package.json",
+    "swagger.json",
+    "openai.json",
+    "README.md"
+  ],
+  "dependencies": {
+    "@nestia/fetcher": "^4.6.0",
+    "tgrid": "^1.1.0",
+    "typia": "^7.6.0"
+  }
+}
