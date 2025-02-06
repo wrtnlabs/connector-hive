@@ -26,8 +26,8 @@
     "webpack:test": "npm run webpack && node bin/test/webpack.js",
     "------------------------DEPLOYS------------------------": "",
     "package:api": "npm run build:api && cd packages/api && npm publish",
-    "start": "node lib/executable/server",
-    "start:swagger": "ts-node src/executable/swagger.ts"
+    "start": "node lib/executables/server",
+    "start:swagger": "ts-node src/executables/swagger.ts"
   },
   "repository": {
     "type": "git",
@@ -63,6 +63,7 @@
     "nestia": "^6.3.1",
     "prettier": "^3.2.4",
     "prettier-plugin-prisma": "^5.0.0",
+    "prisma": "^6.3.1",
     "rimraf": "^3.0.2",
     "rollup": "^4.18.0",
     "source-map-support": "^0.5.21",
@@ -82,6 +83,7 @@
     "@nestjs/common": "^10.4.15",
     "@nestjs/core": "^10.4.15",
     "@nestjs/platform-express": "^10.4.15",
+    "@prisma/client": "^6.3.1",
     "commander": "10.0.0",
     "dotenv": "^16.3.1",
     "dotenv-expand": "^10.0.0",

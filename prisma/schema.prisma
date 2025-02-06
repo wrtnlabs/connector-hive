@@ -1,0 +1,68 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["multiSchema", "postgresqlExtensions"]
+}
+
+datasource db {
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  schemas    = ["public", "extensions"]
+  extensions = [pgvector(map: "vector", schema: "extensions")]
+}
+
+/// Represents a provider of connectors. It "owns" the connectors.
+model ConnectorProvider {
+  name        String   @id
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  connectors Connector[]
+
+  @@schema("public")
+}
+
+/// Represents a single connector. Every connector must be related to a provider.
+model Connector {
+  id           String   @id @default(uuid()) @db.Uuid
+  providerName String
+  method       String
+  path         String
+  description  String
+  schema       Json
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  provider ConnectorProvider @relation(fields: [providerName], references: [name])
+  indices  ConnectorIndex[]
+
+  @@unique([path, providerName, method])
+  // cardinality:
+  // path: almost no overlap
+  // providerName: medium overlap
+  // method: high overlap; has no meaning, so removed
+  @@index([path, providerName])
+  @@schema("public")
+}
+
+/// A semantic index for a connector. Each connector can have multiple indices for better search.
+model ConnectorIndex {
+  id          String                                 @id @default(uuid()) @db.Uuid
+  connectorId String                                 @db.Uuid
+  query       String
+  /// Cohere embedding "embed-multilingual-light-v3.0"
+  ///
+  /// See: https://docs.cohere.com/reference/embed
+  embedding   Unsupported("extensions.halfvec(384)")
+
+  connector Connector @relation(fields: [connectorId], references: [id])
+
+  @@index([embedding], map: "ConnectorIndex_embedding_idx")
+  @@schema("public")
+}

@@ -7,3 +7,5 @@ packages/api/lib/
 
 package-lock.json
 pnpm-lock.yaml
+
+.env

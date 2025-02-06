@@ -3,19 +3,19 @@ import chalk from "chalk";
 import cp from "child_process";
 import { sleep_for } from "tstl";
 
-import { MyConfiguration } from "../src/MyConfiguration";
+import { ConnectorHiveConfiguration } from "../src/ConnectorHiveConfiguration";
 import api from "../src/api";
 
 const main = async (): Promise<void> => {
   // OPEN BUNDLED SERVER
-  const backend = cp.fork(`${MyConfiguration.ROOT}/dist/server.js`, {
-    cwd: `${MyConfiguration.ROOT}/dist`,
+  const backend = cp.fork(`${ConnectorHiveConfiguration.ROOT}/dist/server.js`, {
+    cwd: `${ConnectorHiveConfiguration.ROOT}/dist`,
   });
   await sleep_for(2_500);
 
   // DO TEST
   const connection: api.IConnection = {
-    host: `http://127.0.0.1:${MyConfiguration.API_PORT()}`,
+    host: `http://127.0.0.1:${ConnectorHiveConfiguration.API_PORT()}`,
   };
   const report: DynamicExecutor.IReport = await DynamicExecutor.validate({
     prefix: "test",
