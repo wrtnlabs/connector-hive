@@ -32,6 +32,8 @@
     "paths": {
       "@wrtnlabs/connector-hive-api/lib/*": ["./src/api/*"],
       "@wrtnlabs/connector-hive-api": ["./src/api"],
+      "@wrtnlabs/connector-hive": ["./src"],
+      "@wrtnlabs/connector-hive/*": ["./src/*"],
     },                                      /* Specify a set of entries that re-map imports to additional lookup locations. */
     // "rootDirs": [],                                   /* Allow multiple folders to be treated as one when resolving modules. */
     // "typeRoots": [],                                  /* Specify multiple folders that act like './node_modules/@types'. */

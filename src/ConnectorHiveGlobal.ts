@@ -13,6 +13,8 @@ export class ConnectorHiveGlobal {
 export namespace ConnectorHiveGlobal {
   export interface IEnvironments {
     PROJECT_API_PORT: `${number}`;
+    DATABASE_URL: string;
+    COHERE_API_KEY: string;
   }
 }
 

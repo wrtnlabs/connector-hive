@@ -18,7 +18,7 @@ datasource db {
 
 /// Represents a provider of connectors. It "owns" the connectors.
 model ConnectorProvider {
-  id          String   @id @uuid
+  id          String   @id @db.Uuid
   name        String
   description String?
   createdAt   DateTime @default(now())
@@ -26,30 +26,30 @@ model ConnectorProvider {
 
   connectors Connector[]
 
-  @@unique(["name"])
+  @@unique([name])
   @@schema("public")
 }
 
 /// Represents a single connector. Every connector must be related to a provider.
 model Connector {
-  id           String   @id @default(uuid()) @db.Uuid
-  providerId   String
-  method       String
-  path         String
-  description  String
-  schema       Json
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  id          String   @id @default(uuid()) @db.Uuid
+  providerId  String   @db.Uuid
+  method      String
+  path        String
+  description String
+  schema      Json
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
-  provider ConnectorProvider @relation(fields: [providerName], references: [name])
+  provider ConnectorProvider @relation(fields: [providerId], references: [id])
   indices  ConnectorIndex[]
 
-  @@unique([providerId, path, method])
+  @@unique([path, providerId, method])
   // cardinality:
   // path: almost no overlap
-  // providerName: medium overlap
+  // providerId: medium overlap
   // method: high overlap; has no meaning, so removed
-  @@index([providerId, path])
+  @@index([path, providerId])
   @@schema("public")
 }
 

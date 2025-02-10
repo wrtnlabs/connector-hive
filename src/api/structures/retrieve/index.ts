@@ -5,7 +5,9 @@ export namespace ConnectorRetrieveRequest {
     /**
      * Query string to search for connectors.
      *
-     * It will be trimmed.
+     * Format the query as a request or a question for best results.
+     *
+     * @example "Need to send an email to a customer."
      */
     query: string;
     /**
