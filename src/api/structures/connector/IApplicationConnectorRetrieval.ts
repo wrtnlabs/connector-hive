@@ -1,5 +1,7 @@
 import typia from "typia";
 
+import { IApplicationConnector } from "./IApplicationConnector";
+
 export namespace IApplicationConnectorRetrieval {
   /**
    * Represents a single request to retrieve connectors.
@@ -88,5 +90,15 @@ export namespace IApplicationConnectorRetrieval {
      * The name of the application.
      */
     name: string;
+  }
+
+  /**
+   * Represents a retrieved connector with a distance.
+   */
+  export interface IRetrievedConnector extends IApplicationConnector {
+    /**
+     * Distance between the query and the connector.
+     */
+    distance: number;
   }
 }

@@ -29,7 +29,7 @@ export class ApplicationConnectorRetrievalService {
    */
   async retrieve(
     request: IApplicationConnectorRetrieval.ICreate,
-  ): Promise<IApplicationConnector[]> {
+  ): Promise<IApplicationConnectorRetrieval.IRetrievedConnector[]> {
     return await this.db.$transaction(async (db) => {
       const versionIds =
         request.filter != null && request.filter.applications.length !== 0
@@ -50,32 +50,44 @@ export class ApplicationConnectorRetrievalService {
 
       const whereIn =
         versionIds != null
-          ? Prisma.sql`AND c.versionId = ANY(UNNEST(${versionIds})::uuid[])`
+          ? Prisma.sql`AND c."versionId" = ANY(UNNEST(${versionIds}::uuid[]))`
           : Prisma.empty;
 
-      const results = await db.$queryRaw`
-        SELECT DISTINCT ON (c.id)
-          c.id,
-          c.versionId,
-          c.name,
-          c.description,
-          c.createdAt
+      const connectors = await db.$queryRaw`
+        SELECT
+          c."id",
+          ANY_VALUE(c."versionId") AS "versionId",
+          ANY_VALUE(c."name") AS "name",
+          ANY_VALUE(c."description") AS "description",
+          ANY_VALUE(c."createdAt") AS "createdAt",
+          MIN(i."embedding" OPERATOR(extensions.<=>) ${embedding}::extensions.halfvec(384)) AS "distance"
         FROM "public"."ApplicationConnector" c
-        INNER JOIN "public"."ApplicationConnectorIndex" i ON c.id = i.connectorId
+        INNER JOIN "public"."ApplicationConnectorIndex" i ON c."id" = i."connectorId"
         WHERE TRUE ${whereIn}
-        ORDER BY i.embedding <=> ${embedding} ASC
-        LIMIT ${Prisma.sql`${request.limit}::integer`}
+        GROUP BY c."id"
+        ORDER BY "distance" ASC
+        LIMIT ${request.limit}::integer
       `;
 
-      assertGuard<ApplicationConnector[]>(results);
+      interface IRawConnector {
+        id: string & typia.tags.Format<"uuid">;
+        versionId: string & typia.tags.Format<"uuid">;
+        name: string;
+        description: string | null;
+        createdAt: Date;
+        distance: number;
+      }
 
-      return results.map((result) => {
+      assertGuard<IRawConnector[]>(connectors);
+
+      return connectors.map((result) => {
         return {
           id: result.id,
           versionId: result.versionId,
           name: result.name,
           description: result.description ?? undefined,
           createdAt: result.createdAt.toISOString(),
+          distance: result.distance,
         };
       });
     });
