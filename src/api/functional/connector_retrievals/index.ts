@@ -9,7 +9,6 @@ import { NestiaSimulator } from "@nestia/fetcher/lib/NestiaSimulator";
 import { PlainFetcher } from "@nestia/fetcher/lib/PlainFetcher";
 import typia from "typia";
 
-import type { IApplicationConnector } from "../../structures/connector/IApplicationConnector";
 import type { IApplicationConnectorRetrieval } from "../../structures/connector/IApplicationConnectorRetrieval";
 
 /**
@@ -19,7 +18,8 @@ import type { IApplicationConnectorRetrieval } from "../../structures/connector/
  * using embeddings, and returns them sorted by relevance in descending order (most relevant first).
  *
  * @param body - Connector retrieval request, including the query, limit, and optional filters.
- * @returns List of connectors, sorted by semantic similarity to the query.
+ * @returns List of connectors, sorted by semantic similarity to the query. Each connector contains a distance value,
+ *          which represents the semantic similarity between the query and the connector.
  * @tag connector
  *
  * @controller ApplicationConnectorController.createRetrievalRequest
@@ -50,7 +50,8 @@ export async function createRetrievalRequest(
 }
 export namespace createRetrievalRequest {
   export type Input = IApplicationConnectorRetrieval.ICreate;
-  export type Output = Array<IApplicationConnector>;
+  export type Output =
+    Array<IApplicationConnectorRetrieval.IRetrievedConnector>;
 
   export const METADATA = {
     method: "POST",
@@ -69,8 +70,8 @@ export namespace createRetrievalRequest {
   export const path = () => "/connector-retrievals";
   export const random = (
     g?: Partial<typia.IRandomGenerator>,
-  ): Array<IApplicationConnector> =>
-    typia.random<Array<IApplicationConnector>>(g);
+  ): Array<IApplicationConnectorRetrieval.IRetrievedConnector> =>
+    typia.random<Array<IApplicationConnectorRetrieval.IRetrievedConnector>>(g);
   export const simulate = (
     connection: IConnection,
     body: IApplicationConnectorRetrieval.ICreate,

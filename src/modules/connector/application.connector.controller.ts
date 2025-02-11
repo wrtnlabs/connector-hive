@@ -144,14 +144,15 @@ export class ApplicationConnectorController {
    *                      If multiple filters are provided, they are combined with an OR operation.
    *                      If no filter is provided, all connectors are considered.
    *
-   * @returns List of connectors, sorted by semantic similarity to the query.
+   * @returns List of connectors, sorted by semantic similarity to the query. Each connector contains a distance value,
+   *          which represents the semantic similarity between the query and the connector.
    *
    * @tag connector
    */
   @TypedRoute.Post("connector-retrievals")
   async createRetrievalRequest(
     @TypedBody() body: IApplicationConnectorRetrieval.ICreate,
-  ): Promise<IApplicationConnector[]> {
+  ): Promise<IApplicationConnectorRetrieval.IRetrievedConnector[]> {
     return this.retrieval.retrieve(body);
   }
 }
