@@ -1,7 +1,6 @@
 import { Injectable } from "@nestjs/common";
-import { ApplicationConnector, Prisma, PrismaClient } from "@prisma/client";
+import { Prisma, PrismaClient } from "@prisma/client";
 import { ITXClientDenyList } from "@prisma/client/runtime/library";
-import { IApplicationConnector } from "@wrtnlabs/connector-hive-api/lib/structures/connector/IApplicationConnector";
 import { IApplicationConnectorRetrieval } from "@wrtnlabs/connector-hive-api/lib/structures/connector/IApplicationConnectorRetrieval";
 import { DbService } from "@wrtnlabs/connector-hive/modules/db/db.service";
 import {
@@ -54,7 +53,7 @@ export class ApplicationConnectorRetrievalService {
 
       const whereIn =
         versionIds != null
-          ? Prisma.sql`AND c."versionId" = ANY(UNNEST(${versionIds}::uuid[]))`
+          ? Prisma.sql`AND c."versionId" IN (SELECT UNNEST(${versionIds}::uuid[]))`
           : Prisma.empty;
 
       const connectors = await db.$queryRaw`
