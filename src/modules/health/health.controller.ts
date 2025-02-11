@@ -8,6 +8,8 @@ export class HealthController {
    * Get the health status of the server.
    *
    * @returns The health status of the server.
+   *
+   * @tags health
    */
   @TypedRoute.Get("health")
   get(): IHealth {

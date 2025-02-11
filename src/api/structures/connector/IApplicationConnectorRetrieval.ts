@@ -3,20 +3,20 @@ import typia from "typia";
 export namespace IApplicationConnectorRetrieval {
   /**
    * Represents a single request to retrieve connectors.
-   *
    * You can filter the results by applications and their versions.
    */
   export interface ICreate {
     /**
-     * The search query string. Describe the desired connector's functionality
+     * The search query string.
+     *
+     * Describe the desired connector's functionality
      * in natural language. Be as specific as possible, including details
      * about actions, objects, and any additional features.
-     *
-     * @example "Send an email with a subject and body, including file attachments."
-     * @example "Schedule sending an email at a specific date and time."
-     * @example "Retrieve data from a Google Sheet and send it as an email."
      */
-    query: string;
+    query: string &
+      typia.tags.Example<"Send an email with a subject and body, including file attachments."> &
+      typia.tags.Example<"Schedule sending an email at a specific date and time."> &
+      typia.tags.Example<"Retrieve data from a Google Sheet and send it as an email.">;
 
     /**
      * The maximum number of connectors to return.
@@ -31,7 +31,6 @@ export namespace IApplicationConnectorRetrieval {
 
   /**
    * Represents a filter to narrow down the results.
-   *
    * It can hold multiple application filters. The application filters are applied as an OR operation.
    */
   export interface IFilter {
@@ -42,10 +41,10 @@ export namespace IApplicationConnectorRetrieval {
   }
 
   /**
-   * Represents a single filter to narrow down the results by condition of application.
+   * Represents a single filter.
    *
+   * This is used to narrow down the results by condition of application.
    * Each filter can refer application by either its ID or name, and optionally by its version.
-   *
    * Latest version will be used if version is not specified.
    */
   export type IFilterApplication =

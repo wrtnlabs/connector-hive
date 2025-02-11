@@ -26,7 +26,6 @@ export namespace IApplication {
 
     /**
      * Cursor for paginating applications.
-     *
      * Put the last application's name in the previous request to get the next page of results.
      */
     lastName?: string;
@@ -49,7 +48,6 @@ export namespace IApplication {
 
   /**
    * DTO for updating an application partially.
-   *
    * `null` will delete that property.
    */
   export interface IUpdate {

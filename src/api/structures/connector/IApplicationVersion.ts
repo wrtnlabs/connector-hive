@@ -2,9 +2,7 @@ import typia from "typia";
 
 /**
  * Represents a version of an application.
- *
  * Each version must be unique for an application.
- *
  * You cannot update existing version. Instead, create a new one with a new version number.
  */
 export interface IApplicationVersion {
@@ -44,7 +42,6 @@ export namespace IApplicationVersion {
 
     /**
      * Cursor for paginating versions.
-     *
      * Put the last version in the previous request to get the next page of results.
      */
     lastVersion?: number;

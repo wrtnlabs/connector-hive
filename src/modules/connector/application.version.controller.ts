@@ -10,6 +10,8 @@ export class ApplicationVersionController {
   constructor(private readonly version: ApplicationVersionService) {}
 
   /**
+   * List all versions of an application.
+   *
    * List all versions of an application, sorted by version number in descending order.
    * This endpoint uses cursor-based pagination.
    *
@@ -17,6 +19,8 @@ export class ApplicationVersionController {
    * @param query - Query parameters.
    *
    * @returns List of application versions.
+   *
+   * @tags application-version
    */
   @TypedRoute.Get("applications/by-ids/:id/versions")
   async list(
@@ -32,6 +36,8 @@ export class ApplicationVersionController {
    * @param id - ID of the application version.
    *
    * @returns Application version.
+   *
+   * @tags application-version
    */
   @TypedRoute.Get("application-versions/by-ids/:id")
   async getById(
@@ -47,6 +53,8 @@ export class ApplicationVersionController {
    * @param version - Version number.
    *
    * @returns Application version.
+   *
+   * @tags application-version
    */
   @TypedRoute.Get("applications/by-ids/:id/versions/by-versions/:version")
   async getByVersion(
@@ -62,6 +70,8 @@ export class ApplicationVersionController {
    * @param id - ID of the application.
    *
    * @returns Latest application version.
+   *
+   * @tags application-version
    */
   @TypedRoute.Get("applications/by-ids/:id/versions/latest")
   async getLatest(
@@ -77,6 +87,8 @@ export class ApplicationVersionController {
    * @param body - Application version to create.
    *
    * @returns Created application version.
+   *
+   * @tags application-version
    */
   @TypedRoute.Post("applications/by-ids/:id/versions")
   async create(
@@ -90,6 +102,8 @@ export class ApplicationVersionController {
    * Delete a version of an application.
    *
    * @param id - ID of the application version to delete.
+   *
+   * @tags application-version
    */
   @TypedRoute.Delete("application-versions/by-ids/:id")
   async remove(

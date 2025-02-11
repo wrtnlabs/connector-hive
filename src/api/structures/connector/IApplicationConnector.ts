@@ -2,7 +2,6 @@ import typia from "typia";
 
 /**
  * Represents a single connector. Every connector must be related to an application version.
- *
  * You cannot update existing connector. Instead, create a new one with a new application version.
  */
 export interface IApplicationConnector {
@@ -22,7 +21,9 @@ export interface IApplicationConnector {
   name: string;
 
   /**
-   * The description of the connector.  This field is crucial for semantic search,
+   * The description of the connector.
+   *
+   * This field is crucial for semantic search,
    * as it is used to calculate the embedding vector for the connector.
    *
    * Provide a clear and concise description of the connector's functionality,
@@ -30,13 +31,14 @@ export interface IApplicationConnector {
    * relevant details. Use natural language and be as specific as possible.
    *
    * If no description is provided, the connector's name will be used for indexing instead.
-   *
-   * @example "Sends an email with a customizable subject, body, and recipient list."
-   * @example "Creates a new task in Asana with a title, description, assignee, and due date."
-   * @example "Retrieves data from a Google Sheet and transforms it into a CSV file."
-   * @example "Schedules a Zoom meeting and sends invitations to participants."
    */
-  description: string | undefined;
+  description:
+    | (string &
+        typia.tags.Example<"Sends an email with a customizable subject, body, and recipient list."> &
+        typia.tags.Example<"Creates a new task in Asana with a title, description, assignee, and due date."> &
+        typia.tags.Example<"Retrieves data from a Google Sheet and transforms it into a CSV file."> &
+        typia.tags.Example<"Schedules a Zoom meeting and sends invitations to participants.">)
+    | undefined;
 
   /**
    * The creation date of the connector.
@@ -59,7 +61,6 @@ export namespace IApplicationConnector {
 
     /**
      * Cursor for paginating connectors.
-     *
      * Put the last connector's name in the previous request to get the next page of results.
      */
     lastName?: string;
@@ -79,7 +80,6 @@ export namespace IApplicationConnector {
 
     /**
      * Cursor for paginating connectors across all versions.
-     *
      * Put the last connector's version in the previous request to get the next page of results.
      */
     lastVersion?: number;
@@ -95,7 +95,9 @@ export namespace IApplicationConnector {
     name: string;
 
     /**
-     * The description of the connector.  This field is crucial for semantic search,
+     * The description of the connector.
+     *
+     * This field is crucial for semantic search,
      * as it is used to calculate the embedding vector for the connector.
      *
      * Provide a clear and concise description of the connector's functionality,
@@ -103,12 +105,11 @@ export namespace IApplicationConnector {
      * relevant details. Use natural language and be as specific as possible.
      *
      * If no description is provided, the connector's name will be used for indexing instead.
-     *
-     * @example "Sends an email with a customizable subject, body, and recipient list."
-     * @example "Creates a new task in Asana with a title, description, assignee, and due date."
-     * @example "Retrieves data from a Google Sheet and transforms it into a CSV file."
-     * @example "Schedules a Zoom meeting and sends invitations to participants."
      */
-    description: string | undefined;
+    description: (string | undefined) &
+      typia.tags.Example<"Sends an email with a customizable subject, body, and recipient list."> &
+      typia.tags.Example<"Creates a new task in Asana with a title, description, assignee, and due date."> &
+      typia.tags.Example<"Retrieves data from a Google Sheet and transforms it into a CSV file."> &
+      typia.tags.Example<"Schedules a Zoom meeting and sends invitations to participants.">;
   }
 }

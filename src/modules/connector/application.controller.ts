@@ -10,12 +10,16 @@ export class ApplicationController {
   constructor(private readonly application: ApplicationService) {}
 
   /**
-   * List all applications. The result will be sorted by name in ascending alphabetical order.
+   * List all applications.
+   *
+   * List all applications, sorted by name in ascending alphabetical order.
    * This endpoint uses cursor-based pagination.
    *
    * @param query - Query parameters.
    *
    * @returns List of applications.
+   *
+   * @tags application
    */
   @TypedRoute.Get("applications")
   async list(
@@ -30,6 +34,8 @@ export class ApplicationController {
    * @param id - ID of the application.
    *
    * @returns Application.
+   *
+   * @tags application
    */
   @TypedRoute.Get("applications/by-ids/:id")
   async getById(
@@ -44,6 +50,8 @@ export class ApplicationController {
    * @param name - Name of the application.
    *
    * @returns Application.
+   *
+   * @tags application
    */
   @TypedRoute.Get("applications/by-names/:name")
   async getByName(@TypedParam("name") name: string): Promise<IApplication> {
@@ -56,6 +64,8 @@ export class ApplicationController {
    * @param body - Application to create.
    *
    * @returns Created application.
+   *
+   * @tags application
    */
   @TypedRoute.Post("applications")
   async create(@TypedBody() body: IApplication.ICreate): Promise<IApplication> {
@@ -69,6 +79,8 @@ export class ApplicationController {
    * @param body - Application to update.
    *
    * @returns Updated application.
+   *
+   * @tags application
    */
   @TypedRoute.Put("applications/by-ids/:id")
   async update(
@@ -82,6 +94,8 @@ export class ApplicationController {
    * Delete an application.
    *
    * @param id - ID of the application to delete.
+   *
+   * @tags application
    */
   @TypedRoute.Delete("applications/by-ids/:id")
   async remove(

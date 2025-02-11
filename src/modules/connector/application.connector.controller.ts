@@ -15,6 +15,8 @@ export class ApplicationConnectorController {
   ) {}
 
   /**
+   * List all connectors for a given application version.
+   *
    * List all connectors for a given application version, sorted by connector name in ascending alphabetical order.
    * This endpoint uses cursor-based pagination.
    *
@@ -22,6 +24,8 @@ export class ApplicationConnectorController {
    * @param query - Query parameters.
    *
    * @returns List of connectors.
+   *
+   * @tags connector
    */
   @TypedRoute.Get("application-versions/by-ids/:id/connectors")
   async list(
@@ -40,6 +44,8 @@ export class ApplicationConnectorController {
    * @param cursor - Cursor (version number) to start the list from.
    *
    * @returns List of connectors.
+   *
+   * @tags connector
    */
   @TypedRoute.Get("connectors/by-names/:name/all-versions")
   async listAllVersions(
@@ -56,6 +62,8 @@ export class ApplicationConnectorController {
    * @param id - ID of the connector.
    *
    * @returns Connector.
+   *
+   * @tags connector
    */
   @TypedRoute.Get("connectors/by-ids/:id")
   async getById(
@@ -71,6 +79,8 @@ export class ApplicationConnectorController {
    * @param name - Name of the connector.
    *
    * @returns Connector.
+   *
+   * @tags connector
    */
   @TypedRoute.Get("application-versions/by-ids/:id/connectors/by-names/:name")
   async getByName(
@@ -87,6 +97,8 @@ export class ApplicationConnectorController {
    * @param body - Connector to create.
    *
    * @returns Created connector.
+   *
+   * @tags connector
    */
   @TypedRoute.Post("application-versions/by-ids/:id/connectors")
   async create(
@@ -100,6 +112,8 @@ export class ApplicationConnectorController {
    * Delete a connector.
    *
    * @param id - ID of the connector.
+   *
+   * @tags connector
    */
   @TypedRoute.Delete("connectors/by-ids/:id")
   async remove(
@@ -109,7 +123,9 @@ export class ApplicationConnectorController {
   }
 
   /**
-   * Perform connector retrieval. It searches for connectors that match the query semantically,
+   * Perform connector retrieval.
+   *
+   * It searches for connectors that match the query semantically,
    * using embeddings, and returns them sorted by relevance in descending order (most relevant first).
    *
    * @param body - Connector retrieval request, including the query, limit, and optional filters.
@@ -129,6 +145,8 @@ export class ApplicationConnectorController {
    *                      If no filter is provided, all connectors are considered.
    *
    * @returns List of connectors, sorted by semantic similarity to the query.
+   *
+   * @tags connector
    */
   @TypedRoute.Post("connector-retrievals")
   async createRetrievalRequest(
