@@ -13,27 +13,15 @@ export class ApplicationController {
    * List all applications. The result will be sorted by name in ascending alphabetical order.
    * This endpoint uses cursor-based pagination.
    *
-   * @param limit - Maximum number of applications to return.
-   * @param cursor - Cursor (application name) to start the list from.
-   *                 - If provided, the list will return applications whose names
-   *                   are lexicographically *greater than* the given cursor.
-   *                 - If not provided (undefined), the list will start
-   *                   from the beginning (the first application in alphabetical order).
-   *                 - To get the next page of results, use the `name` of the last
-   *                   application in the current page as the `cursor` for the next request.
+   * @param query - Query parameters.
    *
    * @returns List of applications.
    */
   @TypedRoute.Get("applications")
   async list(
-    @TypedQuery()
-    limit: number &
-      typia.tags.Type<"uint32"> &
-      typia.tags.Minimum<1> &
-      typia.tags.Minimum<100>,
-    @TypedQuery() cursor: IApplication.ICursor | undefined,
+    @TypedQuery() query: IApplication.IListQuery,
   ): Promise<IApplication[]> {
-    return this.application.list(limit, cursor);
+    return this.application.list(query);
   }
 
   /**

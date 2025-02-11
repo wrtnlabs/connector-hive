@@ -12,30 +12,16 @@ export class ApplicationVersionController {
    * This endpoint uses cursor-based pagination.
    *
    * @param id - ID of the application.
-   * @param limit - Maximum number of versions to return.
-   * @param cursor - Cursor (version number) to start the list from.
-   *                 - If provided, the list will return versions whose version numbers
-   *                   are *less than* the given cursor.
-   *                 - If not provided (undefined), the list will start
-   *                   from the latest version (highest version number).
-   *                 - To get the next page of results, use the `version` (or a
-   *                   similarly named property representing the version number) of
-   *                   the last application version in the current page as the
-   *                   `cursor` for the next request.
+   * @param query - Query parameters.
    *
    * @returns List of application versions.
    */
   @TypedRoute.Get("applications/by-ids/:id/versions")
   async list(
     @TypedParam("id") id: string & typia.tags.Format<"uuid">,
-    @TypedQuery()
-    limit: number &
-      typia.tags.Type<"uint32"> &
-      typia.tags.Minimum<1> &
-      typia.tags.Minimum<100>,
-    @TypedQuery() cursor: IApplicationVersion.ICursor | undefined,
+    @TypedQuery() query: IApplicationVersion.IList,
   ): Promise<IApplicationVersion[]> {
-    return this.version.list(id, limit, cursor);
+    return this.version.list(id, query);
   }
 
   /**

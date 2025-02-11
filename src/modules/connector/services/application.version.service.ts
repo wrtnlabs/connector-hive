@@ -15,23 +15,21 @@ export class ApplicationVersionService {
    * List all versions for an application.
    *
    * @param applicationId - ID of the application.
-   * @param limit - Maximum number of versions to return.
-   * @param cursor - Cursor to start from.
+   * @param query - Query parameters.
    *
    * @returns List of versions.
    */
   async list(
     applicationId: string & typia.tags.Format<"uuid">,
-    limit: number & typia.tags.Type<"uint32">,
-    cursor?: IApplicationVersion.ICursor,
+    query: IApplicationVersion.IList,
   ): Promise<IApplicationVersion[]> {
     const where: Prisma.ApplicationVersionWhereInput = {
       applicationId,
     };
 
-    if (cursor?.version) {
+    if (query.lastVersion != null) {
       where.version = {
-        lt: cursor.version,
+        lt: query.lastVersion,
       };
     }
 
@@ -40,7 +38,7 @@ export class ApplicationVersionService {
       orderBy: {
         version: "desc",
       },
-      take: limit,
+      take: query.limit,
       select: {
         id: true,
         version: true,

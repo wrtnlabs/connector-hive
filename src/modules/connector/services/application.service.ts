@@ -18,20 +18,16 @@ export class ApplicationService {
   /**
    * List all applications.
    *
-   * @param limit - Maximum number of applications to return.
-   * @param cursor - Cursor to start the list from.
+   * @param query - Query parameters.
    *
    * @returns List of applications.
    */
-  async list(
-    limit: number & typia.tags.Type<"uint32">,
-    cursor?: IApplication.ICursor,
-  ): Promise<IApplication[]> {
+  async list(query: IApplication.IListQuery): Promise<IApplication[]> {
     const where: Prisma.ApplicationWhereInput = {};
 
-    if (cursor != null) {
+    if (query.lastName != null) {
       where.name = {
-        gte: cursor.name,
+        gt: query.lastName,
       };
     }
 
@@ -42,7 +38,7 @@ export class ApplicationService {
           name: "asc",
         },
       ],
-      take: limit,
+      take: query.limit,
       select: {
         id: true,
         name: true,

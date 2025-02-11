@@ -46,23 +46,43 @@ export interface IApplicationConnector {
 
 export namespace IApplicationConnector {
   /**
-   * Cursor for paginating connectors.
+   * DTO for listing connectors.
    */
-  export interface ICursor {
+  export interface IListQuery {
     /**
-     * The name of the connector.
+     * The maximum number of connectors to return.
      */
-    name: string;
+    limit: number &
+      typia.tags.Type<"uint32"> &
+      typia.tags.Minimum<1> &
+      typia.tags.Minimum<100>;
+
+    /**
+     * Cursor for paginating connectors.
+     *
+     * Put the last connector's name in the previous request to get the next page of results.
+     */
+    lastName?: string;
   }
 
   /**
-   * Cursor for paginating connectors across all versions.
+   * DTO for listing connectors across all versions.
    */
-  export interface ICursorAllVersions {
+  export interface IListQueryAllVersions {
     /**
-     * The version of the connector.
+     * The maximum number of connectors to return.
      */
-    version: number;
+    limit: number &
+      typia.tags.Type<"uint32"> &
+      typia.tags.Minimum<1> &
+      typia.tags.Minimum<100>;
+
+    /**
+     * Cursor for paginating connectors across all versions.
+     *
+     * Put the last connector's version in the previous request to get the next page of results.
+     */
+    lastVersion?: number;
   }
 
   /**

@@ -13,13 +13,23 @@ export interface IApplication {
 
 export namespace IApplication {
   /**
-   * Cursor for paginating applications.
+   * DTO for listing applications.
    */
-  export interface ICursor {
+  export interface IListQuery {
     /**
-     * The name of the application.
+     * The maximum number of applications to return.
      */
-    name: string;
+    limit: number &
+      typia.tags.Type<"uint32"> &
+      typia.tags.Minimum<1> &
+      typia.tags.Minimum<100>;
+
+    /**
+     * Cursor for paginating applications.
+     *
+     * Put the last application's name in the previous request to get the next page of results.
+     */
+    lastName?: string;
   }
 
   /**

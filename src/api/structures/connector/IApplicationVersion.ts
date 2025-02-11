@@ -31,13 +31,23 @@ export interface IApplicationVersion {
 
 export namespace IApplicationVersion {
   /**
-   * Cursor for paginating through versions.
+   * DTO for listing application versions.
    */
-  export interface ICursor {
+  export interface IList {
     /**
-     * The version of the application.
+     * The maximum number of versions to return.
      */
-    version: number;
+    limit: number &
+      typia.tags.Type<"uint32"> &
+      typia.tags.Minimum<1> &
+      typia.tags.Minimum<100>;
+
+    /**
+     * Cursor for paginating versions.
+     *
+     * Put the last version in the previous request to get the next page of results.
+     */
+    lastVersion?: number;
   }
 
   /**

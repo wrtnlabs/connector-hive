@@ -26,23 +26,21 @@ export class ApplicationConnectorService {
    * List all connectors for a given version.
    *
    * @param versionId - ID of the version.
-   * @param limit - Maximum number of connectors to return.
-   * @param cursor - Cursor to start the list from.
+   * @param query - Query parameters.
    *
    * @returns List of connectors.
    */
   async list(
     versionId: string & typia.tags.Format<"uuid">,
-    limit: number & typia.tags.Type<"uint32">,
-    cursor?: IApplicationConnector.ICursor,
+    query: IApplicationConnector.IListQuery,
   ): Promise<IApplicationConnector[]> {
     const where: Prisma.ApplicationConnectorWhereInput = {
       versionId,
     };
 
-    if (cursor != null) {
+    if (query.lastName != null) {
       where.name = {
-        gt: cursor.name,
+        gt: query.lastName,
       };
     }
 
@@ -51,7 +49,7 @@ export class ApplicationConnectorService {
       orderBy: {
         name: "asc",
       },
-      take: limit,
+      take: query.limit,
       select: {
         id: true,
         name: true,
@@ -73,24 +71,22 @@ export class ApplicationConnectorService {
    * List all connectors for a given name across all versions.
    *
    * @param name - Name of the connector.
-   * @param limit - Maximum number of connectors to return.
-   * @param cursor - Cursor to start the list from.
+   * @param query - Query parameters.
    *
    * @returns List of connectors.
    */
   async listAllVersions(
     name: string,
-    limit: number & typia.tags.Type<"uint32">,
-    cursor?: IApplicationConnector.ICursorAllVersions,
+    query: IApplicationConnector.IListQueryAllVersions,
   ): Promise<IApplicationConnector[]> {
     const where: Prisma.ApplicationConnectorWhereInput = {
       name,
     };
 
-    if (cursor != null) {
+    if (query.lastVersion != null) {
       where.version = {
         version: {
-          lt: cursor.version,
+          lt: query.lastVersion,
         },
       };
     }
@@ -102,7 +98,7 @@ export class ApplicationConnectorService {
           version: "desc",
         },
       },
-      take: limit,
+      take: query.limit,
       select: {
         id: true,
         versionId: true,

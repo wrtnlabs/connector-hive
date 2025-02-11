@@ -19,29 +19,17 @@ export class ApplicationConnectorController {
    * This endpoint uses cursor-based pagination.
    *
    * @param id - ID of the application version.
-   * @param limit - Maximum number of connectors to return.
-   * @param cursor - Cursor (connector name) to start the list from.
-   *                 - If provided, the list will return connectors whose names
-   *                   are lexicographically *greater than* the given cursor.
-   *                 - If not provided (undefined), the list will start
-   *                   from the first connector (in alphabetical order).
-   *                 - To get the next page of results, use the `name` (or a
-   *                   similarly named property representing the connector name) of
-   *                   the last connector in the current page as the
-   *                   `cursor` for the next request.
+   * @param query - Query parameters.
    *
    * @returns List of connectors.
    */
   @TypedRoute.Get("application-versions/by-ids/:id/connectors")
   async list(
     @TypedParam("id") id: string & typia.tags.Format<"uuid">,
-    limit: number &
-      typia.tags.Type<"uint32"> &
-      typia.tags.Minimum<1> &
-      typia.tags.Minimum<100>,
-    @TypedQuery() cursor: IApplicationConnector.ICursor | undefined,
+    @TypedQuery()
+    query: IApplicationConnector.IListQuery,
   ): Promise<IApplicationConnector[]> {
-    return this.connector.list(id, limit, cursor);
+    return this.connector.list(id, query);
   }
 
   /**
@@ -57,13 +45,9 @@ export class ApplicationConnectorController {
   async listAllVersions(
     @TypedParam("name") name: string,
     @TypedQuery()
-    limit: number &
-      typia.tags.Type<"uint32"> &
-      typia.tags.Minimum<1> &
-      typia.tags.Minimum<100>,
-    @TypedQuery() cursor: IApplicationConnector.ICursorAllVersions | undefined,
+    query: IApplicationConnector.IListQueryAllVersions,
   ): Promise<IApplicationConnector[]> {
-    return this.connector.listAllVersions(name, limit, cursor);
+    return this.connector.listAllVersions(name, query);
   }
 
   /**
