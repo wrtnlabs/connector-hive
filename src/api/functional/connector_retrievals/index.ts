@@ -20,7 +20,7 @@ import type { IApplicationConnectorRetrieval } from "../../structures/connector/
  *
  * @param body - Connector retrieval request, including the query, limit, and optional filters.
  * @returns List of connectors, sorted by semantic similarity to the query.
- * @tags connector
+ * @tag connector
  *
  * @controller ApplicationConnectorController.createRetrievalRequest
  * @path POST /connector-retrievals

@@ -19,7 +19,7 @@ export class ApplicationController {
    *
    * @returns List of applications.
    *
-   * @tags application
+   * @tag application
    */
   @TypedRoute.Get("applications")
   async list(
@@ -35,7 +35,7 @@ export class ApplicationController {
    *
    * @returns Application.
    *
-   * @tags application
+   * @tag application
    */
   @TypedRoute.Get("applications/by-ids/:id")
   async getById(
@@ -51,7 +51,7 @@ export class ApplicationController {
    *
    * @returns Application.
    *
-   * @tags application
+   * @tag application
    */
   @TypedRoute.Get("applications/by-names/:name")
   async getByName(@TypedParam("name") name: string): Promise<IApplication> {
@@ -65,7 +65,7 @@ export class ApplicationController {
    *
    * @returns Created application.
    *
-   * @tags application
+   * @tag application
    */
   @TypedRoute.Post("applications")
   async create(@TypedBody() body: IApplication.ICreate): Promise<IApplication> {
@@ -80,7 +80,7 @@ export class ApplicationController {
    *
    * @returns Updated application.
    *
-   * @tags application
+   * @tag application
    */
   @TypedRoute.Put("applications/by-ids/:id")
   async update(
@@ -95,7 +95,7 @@ export class ApplicationController {
    *
    * @param id - ID of the application to delete.
    *
-   * @tags application
+   * @tag application
    */
   @TypedRoute.Delete("applications/by-ids/:id")
   async remove(

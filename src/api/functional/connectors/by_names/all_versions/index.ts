@@ -16,7 +16,7 @@ import type { IApplicationConnector } from "../../../../structures/connector/IAp
  *
  * @param name - Name of the connector.
  * @returns List of connectors.
- * @tags connector
+ * @tag connector
  *
  * @controller ApplicationConnectorController.listAllVersions
  * @path GET /connectors/by-names/:name/all-versions

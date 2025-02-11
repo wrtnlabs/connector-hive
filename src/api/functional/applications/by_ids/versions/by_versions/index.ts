@@ -18,7 +18,7 @@ import type { IApplicationVersion } from "../../../../../structures/connector/IA
  * @param id - ID of the application.
  * @param version - Version number.
  * @returns Application version.
- * @tags application-version
+ * @tag application-version
  *
  * @controller ApplicationVersionController.getByVersion
  * @path GET /applications/by-ids/:id/versions/by-versions/:version

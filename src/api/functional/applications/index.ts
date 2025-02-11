@@ -22,7 +22,7 @@ export * as by_names from "./by_names";
  *
  * @param query - Query parameters.
  * @returns List of applications.
- * @tags application
+ * @tag application
  *
  * @controller ApplicationController.list
  * @path GET /applications
@@ -94,7 +94,7 @@ export namespace list {
  *
  * @param body - Application to create.
  * @returns Created application.
- * @tags application
+ * @tag application
  *
  * @controller ApplicationController.create
  * @path POST /applications

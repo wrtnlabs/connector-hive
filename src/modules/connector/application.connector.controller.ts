@@ -25,7 +25,7 @@ export class ApplicationConnectorController {
    *
    * @returns List of connectors.
    *
-   * @tags connector
+   * @tag connector
    */
   @TypedRoute.Get("application-versions/by-ids/:id/connectors")
   async list(
@@ -45,7 +45,7 @@ export class ApplicationConnectorController {
    *
    * @returns List of connectors.
    *
-   * @tags connector
+   * @tag connector
    */
   @TypedRoute.Get("connectors/by-names/:name/all-versions")
   async listAllVersions(
@@ -63,7 +63,7 @@ export class ApplicationConnectorController {
    *
    * @returns Connector.
    *
-   * @tags connector
+   * @tag connector
    */
   @TypedRoute.Get("connectors/by-ids/:id")
   async getById(
@@ -80,7 +80,7 @@ export class ApplicationConnectorController {
    *
    * @returns Connector.
    *
-   * @tags connector
+   * @tag connector
    */
   @TypedRoute.Get("application-versions/by-ids/:id/connectors/by-names/:name")
   async getByName(
@@ -98,7 +98,7 @@ export class ApplicationConnectorController {
    *
    * @returns Created connector.
    *
-   * @tags connector
+   * @tag connector
    */
   @TypedRoute.Post("application-versions/by-ids/:id/connectors")
   async create(
@@ -113,7 +113,7 @@ export class ApplicationConnectorController {
    *
    * @param id - ID of the connector.
    *
-   * @tags connector
+   * @tag connector
    */
   @TypedRoute.Delete("connectors/by-ids/:id")
   async remove(
@@ -146,7 +146,7 @@ export class ApplicationConnectorController {
    *
    * @returns List of connectors, sorted by semantic similarity to the query.
    *
-   * @tags connector
+   * @tag connector
    */
   @TypedRoute.Post("connector-retrievals")
   async createRetrievalRequest(

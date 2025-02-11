@@ -19,7 +19,7 @@ export * as connectors from "./connectors";
  *
  * @param id - ID of the application version.
  * @returns Application version.
- * @tags application-version
+ * @tag application-version
  *
  * @controller ApplicationVersionController.getById
  * @path GET /application-versions/by-ids/:id
@@ -79,7 +79,7 @@ export namespace getById {
  * Delete a version of an application.
  *
  * @param id - ID of the application version to delete.
- * @tags application-version
+ * @tag application-version
  *
  * @controller ApplicationVersionController.remove
  * @path DELETE /application-versions/by-ids/:id

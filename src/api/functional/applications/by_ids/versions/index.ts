@@ -24,7 +24,7 @@ export * as latest from "./latest";
  * @param id - ID of the application.
  * @param query - Query parameters.
  * @returns List of application versions.
- * @tags application-version
+ * @tag application-version
  *
  * @controller ApplicationVersionController.list
  * @path GET /applications/by-ids/:id/versions
@@ -100,7 +100,7 @@ export namespace list {
  * @param id - ID of the application.
  * @param body - Application version to create.
  * @returns Created application version.
- * @tags application-version
+ * @tag application-version
  *
  * @controller ApplicationVersionController.create
  * @path POST /applications/by-ids/:id/versions

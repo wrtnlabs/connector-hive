@@ -20,7 +20,7 @@ export class ApplicationVersionController {
    *
    * @returns List of application versions.
    *
-   * @tags application-version
+   * @tag application-version
    */
   @TypedRoute.Get("applications/by-ids/:id/versions")
   async list(
@@ -37,7 +37,7 @@ export class ApplicationVersionController {
    *
    * @returns Application version.
    *
-   * @tags application-version
+   * @tag application-version
    */
   @TypedRoute.Get("application-versions/by-ids/:id")
   async getById(
@@ -54,7 +54,7 @@ export class ApplicationVersionController {
    *
    * @returns Application version.
    *
-   * @tags application-version
+   * @tag application-version
    */
   @TypedRoute.Get("applications/by-ids/:id/versions/by-versions/:version")
   async getByVersion(
@@ -71,7 +71,7 @@ export class ApplicationVersionController {
    *
    * @returns Latest application version.
    *
-   * @tags application-version
+   * @tag application-version
    */
   @TypedRoute.Get("applications/by-ids/:id/versions/latest")
   async getLatest(
@@ -88,7 +88,7 @@ export class ApplicationVersionController {
    *
    * @returns Created application version.
    *
-   * @tags application-version
+   * @tag application-version
    */
   @TypedRoute.Post("applications/by-ids/:id/versions")
   async create(
@@ -103,7 +103,7 @@ export class ApplicationVersionController {
    *
    * @param id - ID of the application version to delete.
    *
-   * @tags application-version
+   * @tag application-version
    */
   @TypedRoute.Delete("application-versions/by-ids/:id")
   async remove(

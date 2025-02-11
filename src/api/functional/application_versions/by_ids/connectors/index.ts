@@ -23,7 +23,7 @@ export * as by_names from "./by_names";
  * @param id - ID of the application version.
  * @param query - Query parameters.
  * @returns List of connectors.
- * @tags connector
+ * @tag connector
  *
  * @controller ApplicationConnectorController.list
  * @path GET /application-versions/by-ids/:id/connectors
@@ -100,7 +100,7 @@ export namespace list {
  * @param id - ID of the application version.
  * @param body - Connector to create.
  * @returns Created connector.
- * @tags connector
+ * @tag connector
  *
  * @controller ApplicationConnectorController.create
  * @path POST /application-versions/by-ids/:id/connectors
