@@ -40,7 +40,7 @@ export namespace IApplicationVersion {
     limit: number &
       typia.tags.Type<"uint32"> &
       typia.tags.Minimum<1> &
-      typia.tags.Minimum<100>;
+      typia.tags.Maximum<100>;
 
     /**
      * Cursor for paginating versions.

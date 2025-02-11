@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { ApplicationConnector, Prisma, PrismaClient } from "@prisma/client";
 import { ITXClientDenyList } from "@prisma/client/runtime/library";
 import { IApplicationConnector } from "@wrtnlabs/connector-hive-api/lib/structures/connector/IApplicationConnector";
-import { IApplicationConnectorRetrieval } from "@wrtnlabs/connector-hive-api/lib/structures/connector/IApplicationConnectorRetrievalRequest";
+import { IApplicationConnectorRetrieval } from "@wrtnlabs/connector-hive-api/lib/structures/connector/IApplicationConnectorRetrieval";
 import { DbService } from "@wrtnlabs/connector-hive/modules/db/db.service";
 import {
   SemanticCohereService,

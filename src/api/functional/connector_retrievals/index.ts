@@ -10,7 +10,7 @@ import { PlainFetcher } from "@nestia/fetcher/lib/PlainFetcher";
 import typia from "typia";
 
 import type { IApplicationConnector } from "../../structures/connector/IApplicationConnector";
-import type { IApplicationConnectorRetrieval } from "../../structures/connector/IApplicationConnectorRetrievalRequest";
+import type { IApplicationConnectorRetrieval } from "../../structures/connector/IApplicationConnectorRetrieval";
 
 /**
  * Perform connector retrieval. It searches for connectors that match the query semantically,
