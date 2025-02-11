@@ -5,4 +5,3 @@
  */
 //================================================================
 export * as health from "./health";
-export * as connector_retrieve_requests from "./connector_retrieve_requests";

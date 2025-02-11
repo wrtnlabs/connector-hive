@@ -6,7 +6,7 @@
 
 generator client {
   provider        = "prisma-client-js"
-  previewFeatures = ["multiSchema", "postgresqlExtensions"]
+  previewFeatures = ["multiSchema", "postgresqlExtensions", "strictUndefinedChecks"]
 }
 
 datasource db {
@@ -16,54 +16,59 @@ datasource db {
   extensions = [pgvector(map: "vector", schema: "extensions")]
 }
 
-/// Represents a provider of connectors. It "owns" the connectors.
-model ConnectorProvider {
+/// Represents an application that "owns" the connectors.
+model Application {
   id          String   @id @default(uuid()) @db.Uuid
   name        String
   description String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  connectors Connector[]
+  versions ApplicationVersion[]
 
   @@unique([name])
   @@schema("public")
 }
 
-/// Represents a single connector. Every connector must be related to a provider.
-model Connector {
-  id          String   @id @default(uuid()) @db.Uuid
-  providerId  String   @db.Uuid
-  method      String
-  path        String
-  description String
-  schema      Json
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+/// Represents a version of an application.
+model ApplicationVersion {
+  id            String      @id @default(uuid()) @db.Uuid
+  applicationId String      @db.Uuid
+  application   Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  version       Int         @default(0)
+  createdAt     DateTime    @default(now())
 
-  provider ConnectorProvider @relation(fields: [providerId], references: [id])
-  indices  ConnectorIndex[]
+  connectors ApplicationConnector[]
 
-  @@unique([path, providerId, method])
-  // cardinality:
-  // path: almost no overlap
-  // providerId: medium overlap
-  // method: high overlap; has no meaning, so removed
-  @@index([path, providerId])
+  @@unique([applicationId, version])
+  @@schema("public")
+}
+
+/// Represents a single connector. Every connector must be related to an application version.
+model ApplicationConnector {
+  id          String             @id @default(uuid()) @db.Uuid
+  versionId   String             @db.Uuid
+  version     ApplicationVersion @relation(fields: [versionId], references: [id], onDelete: Cascade)
+  name        String
+  description String?
+  createdAt   DateTime           @default(now())
+
+  indices ApplicationConnectorIndex[]
+
+  @@unique([versionId, name])
   @@schema("public")
 }
 
 /// A semantic index for a connector. Each connector can have multiple indices for better search.
-model ConnectorIndex {
+model ApplicationConnectorIndex {
   id          String                                 @id @default(uuid()) @db.Uuid
   connectorId String                                 @db.Uuid
+  connector   ApplicationConnector                   @relation(fields: [connectorId], references: [id], onDelete: Cascade)
   query       String
   /// Cohere embedding "embed-multilingual-light-v3.0"
   ///
   /// See: https://docs.cohere.com/reference/embed
   embedding   Unsupported("extensions.halfvec(384)")
-
-  connector Connector @relation(fields: [connectorId], references: [id])
 
   @@index([embedding], map: "ConnectorIndex_embedding_idx")
   @@schema("public")
