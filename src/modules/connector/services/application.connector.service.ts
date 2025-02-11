@@ -228,9 +228,12 @@ export class ApplicationConnectorService {
           SemanticInputType.Document,
         );
 
-        await this.db.$executeRaw`
-          INSERT INTO "public"."ApplicationConnectorIndex" (connectorId, query, embedding)
-          VALUES (${created.id}, ${query}, ${embedding})
+        // CAUTION: `uuid()` as default value specified in the Prisma schema is provided by the Prisma, not the database.
+        // Be careful when executing raw SQL, as the Prisma will not be able to provide default UUID for it.
+        // Instead, use `gen_random_uuid()` in the raw SQL to generate a valid UUID manually.
+        await db.$executeRaw`
+          INSERT INTO "public"."ApplicationConnectorIndex" ("id", "connectorId", "query", "embedding")
+          VALUES (gen_random_uuid(), ${created.id}::uuid, ${query}::text, ${embedding}::extensions.halfvec(384))
         `;
 
         return {
@@ -266,10 +269,20 @@ export class ApplicationConnectorService {
    * @param id - ID of the connector.
    */
   async remove(id: string & typia.tags.Format<"uuid">): Promise<void> {
-    await this.db.applicationConnector.delete({
-      where: {
-        id,
-      },
-    });
+    try {
+      await this.db.applicationConnector.delete({
+        where: {
+          id,
+        },
+      });
+    } catch (error) {
+      if (error instanceof Prisma.PrismaClientKnownRequestError) {
+        if (error.code === "P2025") {
+          throw new NotFoundException(`connector not found for id '${id}'`);
+        }
+      }
+
+      throw error;
+    }
   }
 }

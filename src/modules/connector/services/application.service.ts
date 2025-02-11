@@ -225,10 +225,20 @@ export class ApplicationService {
    * @param id - ID of the application to remove.
    */
   async remove(id: string & typia.tags.Format<"uuid">): Promise<void> {
-    await this.db.application.delete({
-      where: {
-        id,
-      },
-    });
+    try {
+      await this.db.application.delete({
+        where: {
+          id,
+        },
+      });
+    } catch (error) {
+      if (error instanceof Prisma.PrismaClientKnownRequestError) {
+        if (error.code === "P2025") {
+          throw new NotFoundException(`application not found for id '${id}'`);
+        }
+      }
+
+      throw error;
+    }
   }
 }

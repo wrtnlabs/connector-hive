@@ -23,7 +23,10 @@ export namespace IApplicationConnectorRetrieval {
     /**
      * The maximum number of connectors to return.
      */
-    limit: number & typia.tags.Type<"uint32">;
+    limit: number &
+      typia.tags.Type<"uint32"> &
+      typia.tags.Minimum<1> &
+      typia.tags.Maximum<100>;
 
     /**
      * The filter to narrow down the results.

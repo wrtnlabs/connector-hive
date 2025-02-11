@@ -202,8 +202,20 @@ export class ApplicationVersionService {
    * @param id - ID of the version.
    */
   async remove(id: string & typia.tags.Format<"uuid">): Promise<void> {
-    await this.db.applicationVersion.delete({
-      where: { id },
-    });
+    try {
+      await this.db.applicationVersion.delete({
+        where: { id },
+      });
+    } catch (error) {
+      if (error instanceof Prisma.PrismaClientKnownRequestError) {
+        if (error.code === "P2025") {
+          throw new NotFoundException(
+            `application version not found for id '${id}'`,
+          );
+        }
+      }
+
+      throw error;
+    }
   }
 }
