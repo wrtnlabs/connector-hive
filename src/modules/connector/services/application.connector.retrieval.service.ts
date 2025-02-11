@@ -31,6 +31,10 @@ export class ApplicationConnectorRetrievalService {
     request: IApplicationConnectorRetrieval.ICreate,
   ): Promise<IApplicationConnectorRetrieval.IRetrievedConnector[]> {
     return await this.db.$transaction(async (db) => {
+      if (request.filter?.applications.length === 0) {
+        return [];
+      }
+
       const versionIds =
         request.filter != null && request.filter.applications.length !== 0
           ? await listMatchedApplicationVersionIds(
