@@ -1,9 +1,11 @@
 import { TypedBody, TypedParam, TypedQuery, TypedRoute } from "@nestia/core";
+import { Controller } from "@nestjs/common";
 import { IApplicationVersion } from "@wrtnlabs/connector-hive-api/lib/structures/connector/IApplicationVersion";
 import typia from "typia";
 
 import { ApplicationVersionService } from "./services/application.version.service";
 
+@Controller()
 export class ApplicationVersionController {
   constructor(private readonly version: ApplicationVersionService) {}
 

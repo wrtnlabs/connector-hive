@@ -12,6 +12,8 @@ import type { Format } from "typia/lib/tags/Format";
 
 import type { IApplication } from "../../../structures/connector/IApplication";
 
+export * as versions from "./versions";
+
 /**
  * Get an application by its ID.
  *
