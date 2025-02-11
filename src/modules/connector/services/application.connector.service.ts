@@ -247,6 +247,12 @@ export class ApplicationConnectorService {
               `connector name '${connector.name}' already exists in the version '${versionId}'`,
             );
           }
+
+          if (error.code === "P2003") {
+            throw new NotFoundException(
+              `application version '${versionId}' not found`,
+            );
+          }
         }
 
         throw error;

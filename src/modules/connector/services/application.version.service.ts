@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from "@nestjs/common";
 import { Prisma } from "@prisma/client";
 import { IApplicationVersion } from "@wrtnlabs/connector-hive-api/lib/structures/connector/IApplicationVersion";
 import { DbService } from "@wrtnlabs/connector-hive/modules/db/db.service";
@@ -158,20 +162,38 @@ export class ApplicationVersionService {
     applicationId: string & typia.tags.Format<"uuid">,
     version: number,
   ): Promise<IApplicationVersion> {
-    const created = await this.db.applicationVersion.create({
-      data: { applicationId, version },
-      select: {
-        id: true,
-        createdAt: true,
-      },
-    });
+    try {
+      const created = await this.db.applicationVersion.create({
+        data: { applicationId, version },
+        select: {
+          id: true,
+          createdAt: true,
+        },
+      });
 
-    return {
-      id: created.id,
-      applicationId,
-      version,
-      createdAt: created.createdAt.toISOString(),
-    };
+      return {
+        id: created.id,
+        applicationId,
+        version,
+        createdAt: created.createdAt.toISOString(),
+      };
+    } catch (error) {
+      if (error instanceof Prisma.PrismaClientKnownRequestError) {
+        if (error.code === "P2002") {
+          throw new ConflictException(
+            `version '${version}' for the application '${applicationId}' already exists`,
+          );
+        }
+
+        if (error.code === "P2003") {
+          throw new NotFoundException(
+            `application '${applicationId}' not found`,
+          );
+        }
+      }
+
+      throw error;
+    }
   }
 
   /**
