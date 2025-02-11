@@ -95,7 +95,19 @@ export namespace IApplicationConnector {
     name: string;
 
     /**
-     * The description of the connector.
+     * The description of the connector.  This field is crucial for semantic search,
+     * as it is used to calculate the embedding vector for the connector.
+     *
+     * Provide a clear and concise description of the connector's functionality,
+     * including the actions it performs, the objects it interacts with, and any
+     * relevant details. Use natural language and be as specific as possible.
+     *
+     * If no description is provided, the connector's name will be used for indexing instead.
+     *
+     * @example "Sends an email with a customizable subject, body, and recipient list."
+     * @example "Creates a new task in Asana with a title, description, assignee, and due date."
+     * @example "Retrieves data from a Google Sheet and transforms it into a CSV file."
+     * @example "Schedules a Zoom meeting and sends invitations to participants."
      */
     description: string | undefined;
   }
