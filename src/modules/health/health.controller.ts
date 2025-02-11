@@ -1,11 +1,16 @@
 import { TypedRoute } from "@nestia/core";
 import { Controller } from "@nestjs/common";
-import { Health } from "@wrtnlabs/connector-hive-api/lib/structures/health";
+import { IHealth } from "@wrtnlabs/connector-hive-api/lib/structures/health/IHealth";
 
-@Controller("health")
+@Controller()
 export class HealthController {
-  @TypedRoute.Get()
-  get(): Health.GetRes {
+  /**
+   * Get the health status of the server.
+   *
+   * @returns The health status of the server.
+   */
+  @TypedRoute.Get("health")
+  get(): IHealth {
     return {
       health: "good",
     };
