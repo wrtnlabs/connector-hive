@@ -16,6 +16,7 @@ import type { IApplication } from "../../../structures/connector/IApplication";
  *
  * @param name - Name of the application.
  * @returns Application.
+ * @tags application
  *
  * @controller ApplicationController.getByName
  * @path GET /applications/by-names/:name

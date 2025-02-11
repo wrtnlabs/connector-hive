@@ -34,10 +34,12 @@ export interface IApplicationConnector {
    */
   description:
     | (string &
-        typia.tags.Example<"Sends an email with a customizable subject, body, and recipient list."> &
-        typia.tags.Example<"Creates a new task in Asana with a title, description, assignee, and due date."> &
-        typia.tags.Example<"Retrieves data from a Google Sheet and transforms it into a CSV file."> &
-        typia.tags.Example<"Schedules a Zoom meeting and sends invitations to participants.">)
+        typia.tags.Examples<{
+          "sending email": "Sends an email with a customizable subject, body, and recipient list.";
+          "creating task in asana": "Creates a new task in Asana with a title, description, assignee, and due date.";
+          "retrieving data from google sheet": "Retrieves data from a Google Sheet and transforms it into a CSV file.";
+          "scheduling zoom meeting": "Schedules a Zoom meeting and sends invitations to participants.";
+        }>)
     | undefined;
 
   /**
@@ -107,9 +109,11 @@ export namespace IApplicationConnector {
      * If no description is provided, the connector's name will be used for indexing instead.
      */
     description: (string | undefined) &
-      typia.tags.Example<"Sends an email with a customizable subject, body, and recipient list."> &
-      typia.tags.Example<"Creates a new task in Asana with a title, description, assignee, and due date."> &
-      typia.tags.Example<"Retrieves data from a Google Sheet and transforms it into a CSV file."> &
-      typia.tags.Example<"Schedules a Zoom meeting and sends invitations to participants.">;
+      typia.tags.Examples<{
+        "sending email": "Sends an email with a customizable subject, body, and recipient list.";
+        "creating task in asana": "Creates a new task in Asana with a title, description, assignee, and due date.";
+        "retrieving data from google sheet": "Retrieves data from a Google Sheet and transforms it into a CSV file.";
+        "scheduling zoom meeting": "Schedules a Zoom meeting and sends invitations to participants.";
+      }>;
   }
 }

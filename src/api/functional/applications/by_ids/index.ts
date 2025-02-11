@@ -19,6 +19,7 @@ export * as versions from "./versions";
  *
  * @param id - ID of the application.
  * @returns Application.
+ * @tags application
  *
  * @controller ApplicationController.getById
  * @path GET /applications/by-ids/:id
@@ -79,6 +80,7 @@ export namespace getById {
  * @param id - ID of the application to update.
  * @param body - Application to update.
  * @returns Updated application.
+ * @tags application
  *
  * @controller ApplicationController.update
  * @path PUT /applications/by-ids/:id
@@ -154,6 +156,7 @@ export namespace update {
  * Delete an application.
  *
  * @param id - ID of the application to delete.
+ * @tags application
  *
  * @controller ApplicationController.remove
  * @path DELETE /applications/by-ids/:id

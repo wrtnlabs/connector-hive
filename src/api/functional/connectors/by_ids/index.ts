@@ -17,6 +17,7 @@ import type { IApplicationConnector } from "../../../structures/connector/IAppli
  *
  * @param id - ID of the connector.
  * @returns Connector.
+ * @tags connector
  *
  * @controller ApplicationConnectorController.getById
  * @path GET /connectors/by-ids/:id
@@ -76,6 +77,7 @@ export namespace getById {
  * Delete a connector.
  *
  * @param id - ID of the connector.
+ * @tags connector
  *
  * @controller ApplicationConnectorController.remove
  * @path DELETE /connectors/by-ids/:id

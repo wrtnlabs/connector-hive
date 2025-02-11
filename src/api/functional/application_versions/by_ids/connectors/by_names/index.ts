@@ -18,6 +18,7 @@ import type { IApplicationConnector } from "../../../../../structures/connector/
  * @param id - ID of the application version.
  * @param name - Name of the connector.
  * @returns Connector.
+ * @tags connector
  *
  * @controller ApplicationConnectorController.getByName
  * @path GET /application-versions/by-ids/:id/connectors/by-names/:name

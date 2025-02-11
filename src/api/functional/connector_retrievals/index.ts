@@ -13,11 +13,14 @@ import type { IApplicationConnector } from "../../structures/connector/IApplicat
 import type { IApplicationConnectorRetrieval } from "../../structures/connector/IApplicationConnectorRetrieval";
 
 /**
- * Perform connector retrieval. It searches for connectors that match the query semantically,
+ * Perform connector retrieval.
+ *
+ * It searches for connectors that match the query semantically,
  * using embeddings, and returns them sorted by relevance in descending order (most relevant first).
  *
  * @param body - Connector retrieval request, including the query, limit, and optional filters.
  * @returns List of connectors, sorted by semantic similarity to the query.
+ * @tags connector
  *
  * @controller ApplicationConnectorController.createRetrievalRequest
  * @path POST /connector-retrievals

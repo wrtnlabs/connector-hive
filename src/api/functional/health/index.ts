@@ -14,6 +14,7 @@ import type { IHealth } from "../../structures/health/IHealth";
  * Get the health status of the server.
  *
  * @returns The health status of the server.
+ * @tags health
  *
  * @controller HealthController.get
  * @path GET /health

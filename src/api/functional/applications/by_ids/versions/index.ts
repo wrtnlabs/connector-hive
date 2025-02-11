@@ -16,12 +16,15 @@ export * as by_versions from "./by_versions";
 export * as latest from "./latest";
 
 /**
+ * List all versions of an application.
+ *
  * List all versions of an application, sorted by version number in descending order.
  * This endpoint uses cursor-based pagination.
  *
  * @param id - ID of the application.
  * @param query - Query parameters.
  * @returns List of application versions.
+ * @tags application-version
  *
  * @controller ApplicationVersionController.list
  * @path GET /applications/by-ids/:id/versions
@@ -97,6 +100,7 @@ export namespace list {
  * @param id - ID of the application.
  * @param body - Application version to create.
  * @returns Created application version.
+ * @tags application-version
  *
  * @controller ApplicationVersionController.create
  * @path POST /applications/by-ids/:id/versions

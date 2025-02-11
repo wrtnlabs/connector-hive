@@ -14,9 +14,11 @@ export namespace IApplicationConnectorRetrieval {
      * about actions, objects, and any additional features.
      */
     query: string &
-      typia.tags.Example<"Send an email with a subject and body, including file attachments."> &
-      typia.tags.Example<"Schedule sending an email at a specific date and time."> &
-      typia.tags.Example<"Retrieve data from a Google Sheet and send it as an email.">;
+      typia.tags.Examples<{
+        "sending email": "Send an email with a subject and body, including file attachments.";
+        "schedule email sending": "Schedule sending an email at a specific date and time.";
+        "google sheet to email": "Retrieve data from a Google Sheet and send it as an email.";
+      }>;
 
     /**
      * The maximum number of connectors to return.
