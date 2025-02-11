@@ -54,6 +54,6 @@ export namespace IApplicationVersion {
     /**
      * The version of the application.
      */
-    version: number;
+    version: number & typia.tags.Type<"uint32"> & typia.tags.Minimum<1>;
   }
 }
