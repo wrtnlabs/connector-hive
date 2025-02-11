@@ -18,7 +18,7 @@ import type { IApplicationConnectorRetrieval } from "../../structures/connector/
  * using embeddings, and returns them sorted by relevance in descending order (most relevant first).
  *
  * @param body - Connector retrieval request, including the query, limit, and optional filters.
- * @returns List of connectors, sorted by semantic similarity to the query. Each connector contains a distance value,
+ * @returns List of connectors, sorted by semantic similarity to the query. Each connector contains a similarity value,
  *          which represents the semantic similarity between the query and the connector.
  * @tag connector
  *

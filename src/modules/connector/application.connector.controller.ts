@@ -144,7 +144,7 @@ export class ApplicationConnectorController {
    *                      If multiple filters are provided, they are combined with an OR operation.
    *                      If no filter is provided, all connectors are considered.
    *
-   * @returns List of connectors, sorted by semantic similarity to the query. Each connector contains a distance value,
+   * @returns List of connectors, sorted by semantic similarity to the query. Each connector contains a similarity value,
    *          which represents the semantic similarity between the query and the connector.
    *
    * @tag connector

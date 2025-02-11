@@ -97,8 +97,13 @@ export namespace IApplicationConnectorRetrieval {
    */
   export interface IRetrievedConnector extends IApplicationConnector {
     /**
-     * Distance between the query and the connector.
+     * Similarity between the query and the connector.
+     *
+     * The value is between -1 and 1, where -1 means no similarity and 1 means exact match.
      */
-    distance: number;
+    similarity: number &
+      typia.tags.Type<"double"> &
+      typia.tags.Minimum<-1> &
+      typia.tags.Maximum<1>;
   }
 }

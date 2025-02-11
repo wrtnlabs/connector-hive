@@ -87,7 +87,7 @@ export class ApplicationConnectorRetrievalService {
           name: result.name,
           description: result.description ?? undefined,
           createdAt: result.createdAt.toISOString(),
-          distance: result.distance,
+          similarity: 1 - result.distance,
         };
       });
     });
