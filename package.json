@@ -41,8 +41,8 @@
   "homepage": "https://github.com/wrtnlabs/connector-hive#readme",
   "devDependencies": {
     "@nestia/benchmark": "^0.3.0",
-    "@nestia/e2e": "^0.7.0",
-    "@nestia/sdk": "^4.6.0",
+    "@nestia/e2e": "^0.8.0",
+    "@nestia/sdk": "^4.6.1",
     "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-typescript": "^11.1.6",
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",
@@ -78,8 +78,8 @@
     "write-file-webpack-plugin": "^4.5.1"
   },
   "dependencies": {
-    "@nestia/core": "^4.6.0",
-    "@nestia/fetcher": "^4.6.0",
+    "@nestia/core": "^4.6.1",
+    "@nestia/fetcher": "^4.6.1",
     "@nestjs/common": "^10.4.15",
     "@nestjs/core": "^10.4.15",
     "@nestjs/platform-express": "^10.4.15",
@@ -93,7 +93,7 @@
     "serialize-error": "^4.1.0",
     "tgrid": "^1.0.2",
     "tstl": "^3.0.0",
-    "typia": "^7.6.0",
+    "typia": "^7.6.4",
     "uuid": "^9.0.0"
   },
   "stackblitz": {
