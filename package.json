@@ -33,7 +33,7 @@
     "url": "https://github.com/wrtnlabs/connector-hive"
   },
   "author": "Shrimp <shrimp@wrtn.io>",
-  "license": "AGPL-3.0-only",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/wrtnlabs/connector-hive/issues"
   },
