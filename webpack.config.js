@@ -17,7 +17,7 @@ const lazyImports = [
 module.exports = {
   // CUSTOMIZE HERE
   entry: {
-    server: "./src/executable/server.ts",
+    server: "./src/executables/server.ts",
   },
   output: {
     path: path.join(__dirname, "dist"),
@@ -46,16 +46,12 @@ module.exports = {
     new CopyWebpackPlugin({
       patterns: [
         {
-          from: ".env",
-          to: "[name][ext]",
+          from: "./node_modules/.prisma/client/*.node",
+          to: () => Promise.resolve("[path][name][ext]"),
+          globOptions: {
+            dot: true,
+          },
         },
-        // {
-        //   from: "./node_modules/.prisma/client/*.node",
-        //   to: () => Promise.resolve("[path][name][ext]"),
-        //   globOptions: {
-        //     dot: true,
-        //   },
-        // },
       ],
     }),
     new WriteFilePlugin(),

@@ -1,0 +1,41 @@
+# Version control
+.git
+.gitignore
+.gitattributes
+
+# Build outputs
+bin/
+dist/
+lib/
+packages/api/lib/
+
+# Dependencies
+node_modules
+**/node_modules
+
+# Environment and local files
+.env
+.env.*
+.envrc
+.editorconfig
+.eslintrc*
+.prettierrc*
+.prettier*
+
+# Development files
+*.log
+*.md
+test/
+tests/
+coverage/
+.vscode/
+.idea/
+
+# Docker files themselves
+Dockerfile
+.dockerignore
+
+# Other unnecessary files
+.DS_Store
+*.swp
+*.swo

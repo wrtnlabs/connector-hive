@@ -13,6 +13,7 @@ export class DbService extends PrismaClient implements OnModuleInit {
       this.logger.debug("connecting to database");
       await this.$connect();
     } catch (error: unknown) {
+      console.error("error", error);
       this.logger.error("failed to connect to database", error);
     }
   }
