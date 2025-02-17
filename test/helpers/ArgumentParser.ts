@@ -1,10 +1,13 @@
+import {
+  input as inquirerInput,
+  select as inquirerSelect,
+} from "@inquirer/prompts";
 import commander from "commander";
-import * as inquirer from "inquirer";
 
 export namespace ArgumentParser {
   export type Inquiry<T> = (
     command: commander.Command,
-    prompt: (opt?: inquirer.StreamOptions) => inquirer.PromptModule,
+    prompt: Prompt,
     action: (closure: (options: Partial<T>) => Promise<T>) => Promise<T>,
   ) => Promise<T>;
 
@@ -39,35 +42,44 @@ export namespace ArgumentParser {
       });
 
     const select =
-      (name: string) =>
+      (_name: string) =>
       (message: string) =>
       async <Choice extends string>(choices: Choice[]): Promise<Choice> =>
-        (
-          await inquirer.createPromptModule()({
-            type: "list",
-            name,
-            message,
-            choices,
-          })
-        )[name];
-    const boolean = (name: string) => async (message: string) =>
-      (
-        await inquirer.createPromptModule()({
-          type: "confirm",
-          name,
+        await inquirerSelect({
           message,
-        })
-      )[name] as boolean;
+          choices,
+        });
+    const boolean = (_name: string) => async (message: string) =>
+      await inquirerInput({
+        message,
+        required: true,
+        transformer: (value: string) => {
+          const lowercased = value.toLowerCase();
+
+          if (lowercased === "y") return "true";
+          if (lowercased === "yes") return "true";
+          if (lowercased === "true") return "true";
+          if (lowercased === "n") return "false";
+          if (lowercased === "no") return "false";
+          if (lowercased === "false") return "false";
+
+          return value;
+        },
+        validate: (value: string) => {
+          if (value === "true" || value === "false") return true;
+          return "invalid input; please input `yes` or `no`";
+        },
+      }).then((value) => value === "true");
     const number = (name: string) => async (message: string) =>
-      Number(
-        (
-          await inquirer.createPromptModule()({
-            type: "number",
-            name,
-            message,
-          })
-        )[name],
-      );
+      await inquirerInput({
+        message,
+        required: true,
+        validate: (value: string) => {
+          if (isNaN(Number(value)))
+            return "invalid input; please input a valid number";
+          return true;
+        },
+      }).then((value) => Number(value));
 
     const output: T | Error = await (async () => {
       try {
