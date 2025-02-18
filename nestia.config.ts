@@ -17,6 +17,12 @@ const NESTIA_CONFIG: sdk.INestiaConfig = {
       },
     ],
     beautify: true,
+    security: {
+      ApiKey: {
+        type: "http",
+        scheme: "bearer",
+      },
+    },
   },
   distribute: "packages/api",
   primitive: false,

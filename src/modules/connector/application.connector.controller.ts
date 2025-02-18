@@ -1,13 +1,16 @@
 import { TypedBody, TypedParam, TypedQuery, TypedRoute } from "@nestia/core";
-import { Controller } from "@nestjs/common";
+import { Controller, UseGuards } from "@nestjs/common";
 import { IApplicationConnector } from "@wrtnlabs/connector-hive-api/lib/structures/connector/IApplicationConnector";
 import { IApplicationConnectorRetrieval } from "@wrtnlabs/connector-hive-api/lib/structures/connector/IApplicationConnectorRetrieval";
+import { AttachSwaggerSecurityBearer } from "@wrtnlabs/connector-hive/modules/auth/services/attach.swagger.security.bearer.decorator";
+import { AuthGuard } from "@wrtnlabs/connector-hive/modules/auth/services/auth.guard";
 import typia from "typia";
 
 import { ApplicationConnectorRetrievalService } from "./services/application.connector.retrieval.service";
 import { ApplicationConnectorService } from "./services/application.connector.service";
 
 @Controller()
+@UseGuards(AuthGuard)
 export class ApplicationConnectorController {
   constructor(
     private readonly connector: ApplicationConnectorService,
@@ -28,6 +31,7 @@ export class ApplicationConnectorController {
    * @tag connector
    */
   @TypedRoute.Get("application-versions/by-ids/:id/connectors")
+  @AttachSwaggerSecurityBearer
   async list(
     @TypedParam("id") id: string & typia.tags.Format<"uuid">,
     @TypedQuery()
@@ -48,6 +52,7 @@ export class ApplicationConnectorController {
    * @tag connector
    */
   @TypedRoute.Get("connectors/by-names/:name/all-versions")
+  @AttachSwaggerSecurityBearer
   async listAllVersions(
     @TypedParam("name") name: string,
     @TypedQuery()
@@ -66,6 +71,7 @@ export class ApplicationConnectorController {
    * @tag connector
    */
   @TypedRoute.Get("connectors/by-ids/:id")
+  @AttachSwaggerSecurityBearer
   async getById(
     @TypedParam("id") id: string & typia.tags.Format<"uuid">,
   ): Promise<IApplicationConnector> {
@@ -83,6 +89,7 @@ export class ApplicationConnectorController {
    * @tag connector
    */
   @TypedRoute.Get("application-versions/by-ids/:id/connectors/by-names/:name")
+  @AttachSwaggerSecurityBearer
   async getByName(
     @TypedParam("id") id: string & typia.tags.Format<"uuid">,
     @TypedParam("name") name: string,
@@ -101,6 +108,7 @@ export class ApplicationConnectorController {
    * @tag connector
    */
   @TypedRoute.Post("application-versions/by-ids/:id/connectors")
+  @AttachSwaggerSecurityBearer
   async create(
     @TypedParam("id") id: string & typia.tags.Format<"uuid">,
     @TypedBody() body: IApplicationConnector.ICreate,
@@ -116,6 +124,7 @@ export class ApplicationConnectorController {
    * @tag connector
    */
   @TypedRoute.Delete("connectors/by-ids/:id")
+  @AttachSwaggerSecurityBearer
   async remove(
     @TypedParam("id") id: string & typia.tags.Format<"uuid">,
   ): Promise<void> {
@@ -150,6 +159,7 @@ export class ApplicationConnectorController {
    * @tag connector
    */
   @TypedRoute.Post("connector-retrievals")
+  @AttachSwaggerSecurityBearer
   async createRetrievalRequest(
     @TypedBody() body: IApplicationConnectorRetrieval.ICreate,
   ): Promise<IApplicationConnectorRetrieval.IRetrievedConnector[]> {

@@ -1,4 +1,7 @@
 import { Module } from "@nestjs/common";
+import { APP_GUARD } from "@nestjs/core";
+import { AuthModule } from "@wrtnlabs/connector-hive/modules/auth/auth.module";
+import { AuthGuard } from "@wrtnlabs/connector-hive/modules/auth/services/auth.guard";
 import { SemanticModule } from "@wrtnlabs/connector-hive/modules/semantic/semantic.module";
 
 import { ApplicationConnectorController } from "./application.connector.controller";
@@ -10,7 +13,7 @@ import { ApplicationService } from "./services/application.service";
 import { ApplicationVersionService } from "./services/application.version.service";
 
 @Module({
-  imports: [SemanticModule],
+  imports: [AuthModule, SemanticModule],
   providers: [
     ApplicationService,
     ApplicationConnectorService,

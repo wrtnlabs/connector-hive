@@ -1,11 +1,14 @@
 import { TypedBody, TypedParam, TypedQuery, TypedRoute } from "@nestia/core";
-import { Controller } from "@nestjs/common";
+import { Controller, UseGuards } from "@nestjs/common";
 import { IApplication } from "@wrtnlabs/connector-hive-api/lib/structures/connector/IApplication";
+import { AttachSwaggerSecurityBearer } from "@wrtnlabs/connector-hive/modules/auth/services/attach.swagger.security.bearer.decorator";
+import { AuthGuard } from "@wrtnlabs/connector-hive/modules/auth/services/auth.guard";
 import typia from "typia";
 
 import { ApplicationService } from "./services/application.service";
 
 @Controller()
+@UseGuards(AuthGuard)
 export class ApplicationController {
   constructor(private readonly application: ApplicationService) {}
 
@@ -22,6 +25,7 @@ export class ApplicationController {
    * @tag application
    */
   @TypedRoute.Get("applications")
+  @AttachSwaggerSecurityBearer
   async list(
     @TypedQuery() query: IApplication.IListQuery,
   ): Promise<IApplication[]> {
@@ -38,6 +42,7 @@ export class ApplicationController {
    * @tag application
    */
   @TypedRoute.Get("applications/by-ids/:id")
+  @AttachSwaggerSecurityBearer
   async getById(
     @TypedParam("id") id: string & typia.tags.Format<"uuid">,
   ): Promise<IApplication> {
@@ -54,6 +59,7 @@ export class ApplicationController {
    * @tag application
    */
   @TypedRoute.Get("applications/by-names/:name")
+  @AttachSwaggerSecurityBearer
   async getByName(@TypedParam("name") name: string): Promise<IApplication> {
     return this.application.getByName(name);
   }
@@ -68,6 +74,7 @@ export class ApplicationController {
    * @tag application
    */
   @TypedRoute.Post("applications")
+  @AttachSwaggerSecurityBearer
   async create(@TypedBody() body: IApplication.ICreate): Promise<IApplication> {
     return this.application.create(body);
   }
@@ -83,6 +90,7 @@ export class ApplicationController {
    * @tag application
    */
   @TypedRoute.Put("applications/by-ids/:id")
+  @AttachSwaggerSecurityBearer
   async update(
     @TypedParam("id") id: string & typia.tags.Format<"uuid">,
     @TypedBody() body: IApplication.IUpdate,
@@ -98,6 +106,7 @@ export class ApplicationController {
    * @tag application
    */
   @TypedRoute.Delete("applications/by-ids/:id")
+  @AttachSwaggerSecurityBearer
   async remove(
     @TypedParam("id") id: string & typia.tags.Format<"uuid">,
   ): Promise<void> {

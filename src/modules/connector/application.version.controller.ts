@@ -1,11 +1,14 @@
 import { TypedBody, TypedParam, TypedQuery, TypedRoute } from "@nestia/core";
-import { Controller } from "@nestjs/common";
+import { Controller, UseGuards } from "@nestjs/common";
 import { IApplicationVersion } from "@wrtnlabs/connector-hive-api/lib/structures/connector/IApplicationVersion";
+import { AttachSwaggerSecurityBearer } from "@wrtnlabs/connector-hive/modules/auth/services/attach.swagger.security.bearer.decorator";
+import { AuthGuard } from "@wrtnlabs/connector-hive/modules/auth/services/auth.guard";
 import typia from "typia";
 
 import { ApplicationVersionService } from "./services/application.version.service";
 
 @Controller()
+@UseGuards(AuthGuard)
 export class ApplicationVersionController {
   constructor(private readonly version: ApplicationVersionService) {}
 
@@ -23,6 +26,7 @@ export class ApplicationVersionController {
    * @tag application-version
    */
   @TypedRoute.Get("applications/by-ids/:id/versions")
+  @AttachSwaggerSecurityBearer
   async list(
     @TypedParam("id") id: string & typia.tags.Format<"uuid">,
     @TypedQuery() query: IApplicationVersion.IList,
@@ -40,6 +44,7 @@ export class ApplicationVersionController {
    * @tag application-version
    */
   @TypedRoute.Get("application-versions/by-ids/:id")
+  @AttachSwaggerSecurityBearer
   async getById(
     @TypedParam("id") id: string & typia.tags.Format<"uuid">,
   ): Promise<IApplicationVersion> {
@@ -57,6 +62,7 @@ export class ApplicationVersionController {
    * @tag application-version
    */
   @TypedRoute.Get("applications/by-ids/:id/versions/by-versions/:version")
+  @AttachSwaggerSecurityBearer
   async getByVersion(
     @TypedParam("id") id: string & typia.tags.Format<"uuid">,
     @TypedParam("version") version: number,
@@ -74,6 +80,7 @@ export class ApplicationVersionController {
    * @tag application-version
    */
   @TypedRoute.Get("applications/by-ids/:id/versions/latest")
+  @AttachSwaggerSecurityBearer
   async getLatest(
     @TypedParam("id") id: string & typia.tags.Format<"uuid">,
   ): Promise<IApplicationVersion> {
@@ -91,6 +98,7 @@ export class ApplicationVersionController {
    * @tag application-version
    */
   @TypedRoute.Post("applications/by-ids/:id/versions")
+  @AttachSwaggerSecurityBearer
   async create(
     @TypedParam("id") id: string & typia.tags.Format<"uuid">,
     @TypedBody() body: IApplicationVersion.ICreate,
@@ -106,6 +114,7 @@ export class ApplicationVersionController {
    * @tag application-version
    */
   @TypedRoute.Delete("application-versions/by-ids/:id")
+  @AttachSwaggerSecurityBearer
   async remove(
     @TypedParam("id") id: string & typia.tags.Format<"uuid">,
   ): Promise<void> {

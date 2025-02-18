@@ -1,5 +1,6 @@
 import cp from "child_process";
 import express from "express";
+import { serve, setup } from "swagger-ui-express";
 
 const execute = (command: string): void => {
   console.log(`\n$ ${command}\n`);
@@ -13,8 +14,7 @@ const main = async (): Promise<void> => {
   const docs = await import("../../packages/api/swagger.json" as any);
 
   const app = express();
-  const swaggerUi = require("swagger-ui-express");
-  app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(docs));
+  app.use("/api-docs", serve, setup(docs));
   app.listen(37810);
 
   console.log("\n");
