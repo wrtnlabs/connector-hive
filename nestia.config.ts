@@ -18,9 +18,11 @@ const NESTIA_CONFIG: sdk.INestiaConfig = {
     ],
     beautify: true,
     security: {
-      ApiKey: {
-        type: "http",
-        scheme: "bearer",
+      bearer: {
+        type: "apiKey",
+        name: "Authorization",
+        in: "header",
+        description: "API_KEY set when launching server",
       },
     },
   },
