@@ -97,6 +97,8 @@ export namespace list {
 /**
  * Create a new version of an application.
  *
+ * If the version is not provided, it will automatically generate a new version number.
+ *
  * @param id - ID of the application.
  * @param body - Application version to create.
  * @returns Created application version.

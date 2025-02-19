@@ -6,7 +6,7 @@ import {
 import { Prisma } from "@prisma/client";
 import { IApplicationVersion } from "@wrtnlabs/connector-hive-api/lib/structures/connector/IApplicationVersion";
 import { DbService } from "@wrtnlabs/connector-hive/modules/db/db.service";
-import typia from "typia";
+import typia, { assertGuard } from "typia";
 
 /**
  * Service for managing application versions.
@@ -153,6 +153,8 @@ export class ApplicationVersionService {
   /**
    * Create a new version for an application.
    *
+   * If the version is not provided, the service will automatically generate a new version number.
+   *
    * @param applicationId - ID of the application.
    * @param version - Version number.
    *
@@ -160,11 +162,25 @@ export class ApplicationVersionService {
    */
   async create(
     applicationId: string & typia.tags.Format<"uuid">,
+    version: number | undefined,
+  ): Promise<IApplicationVersion> {
+    if (version == null) {
+      return this.createWithAutoVersion(applicationId);
+    }
+
+    return this.createWithVersion(applicationId, version);
+  }
+
+  private async createWithVersion(
+    applicationId: string & typia.tags.Format<"uuid">,
     version: number,
   ): Promise<IApplicationVersion> {
     try {
       const created = await this.db.applicationVersion.create({
-        data: { applicationId, version },
+        data: {
+          applicationId,
+          version,
+        },
         select: {
           id: true,
           createdAt: true,
@@ -194,6 +210,40 @@ export class ApplicationVersionService {
 
       throw error;
     }
+  }
+
+  private async createWithAutoVersion(
+    applicationId: string & typia.tags.Format<"uuid">,
+  ): Promise<IApplicationVersion> {
+    const created = await this.db.$queryRaw`
+      INSERT INTO "public"."ApplicationVersion" (
+        "applicationId",
+        "version"
+      ) VALUES (
+        ${applicationId},
+        (
+          SELECT COALESCE(MAX("version"), 0) + 1
+          FROM "public"."ApplicationVersion"
+          WHERE "applicationId" = ${applicationId}
+        )
+      )
+      RETURNING "id", "version", "createdAt"
+    `;
+
+    interface IRawApplicationVersion {
+      id: string & typia.tags.Format<"uuid">;
+      version: number;
+      createdAt: Date;
+    }
+
+    assertGuard<IRawApplicationVersion>(created);
+
+    return {
+      id: created.id,
+      applicationId,
+      version: created.version,
+      createdAt: created.createdAt.toISOString(),
+    };
   }
 
   /**

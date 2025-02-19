@@ -52,8 +52,8 @@ export namespace IApplicationVersion {
    */
   export interface ICreate {
     /**
-     * The version of the application.
+     * The version of the application. You can omit this value to let the service generate a latest version.
      */
-    version: number & typia.tags.Type<"uint32"> & typia.tags.Minimum<1>;
+    version?: number & typia.tags.Type<"uint32"> & typia.tags.Minimum<1>;
   }
 }
