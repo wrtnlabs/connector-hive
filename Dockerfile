@@ -27,11 +27,18 @@ FROM node:20-alpine AS production
 
 WORKDIR /app
 
+# Install Prisma CLI and required dependencies
+RUN apk add --no-cache openssl
+RUN npm install prisma
+
+# Copy prisma files for migrations
+COPY --from=builder /app/prisma ./prisma
+
 # Copy only the bundled files from dist
 COPY --from=builder /app/dist/. ./
 
-# Set user to non-root
-USER node
+# Set environment for Prisma
+ENV PRISMA_CLI_BINARY_TARGETS=linux-musl
 
 # Start the bundled application
 CMD ["node", "server.js"]
