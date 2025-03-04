@@ -22,7 +22,7 @@ jobs:
       - name: SDK Build
         run: npm run build:sdk
       - name: Publish SDK to NPM
-        run: npm publiish --access public --provenance
+        run: npm publish --access public --provenance
         working-directory: ./packages/api
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH }}
