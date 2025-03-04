@@ -41,8 +41,8 @@
   "homepage": "https://github.com/wrtnlabs/connector-hive#readme",
   "devDependencies": {
     "@nestia/benchmark": "^0.3.0",
-    "@nestia/e2e": "^0.8.0",
-    "@nestia/sdk": "^4.6.1",
+    "@nestia/e2e": "^0.8.2",
+    "@nestia/sdk": "^5.0.0",
     "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-typescript": "^12.1.2",
     "@trivago/prettier-plugin-sort-imports": "^5.2.2",
