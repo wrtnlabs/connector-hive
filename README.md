@@ -123,4 +123,6 @@ npm run dev
 
 ## License
 
-MIT
+MIT License
+
+Copyright (c) 2025 Wrtn Technologies
