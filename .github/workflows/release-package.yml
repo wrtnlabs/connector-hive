@@ -1,4 +1,4 @@
-name: Docker Package Release
+name: Docker Package Release to GitHub Container Registry
 
 on:
   release:
