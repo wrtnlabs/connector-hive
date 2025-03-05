@@ -1,4 +1,3 @@
-# author: elliot-huffman
 name: release
 on:
   release:
@@ -20,7 +19,7 @@ jobs:
       - name: Build Env File
         run: npm run build:env
       - name: SDK Build
-        run: npm run build:sdk
+        run: npm run build:api
       - name: Publish SDK to NPM
         run: npm publish --access public --provenance
         working-directory: ./packages/api
