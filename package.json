@@ -1,6 +1,6 @@
 {
   "name": "@wrtnlabs/connector-hive",
-  "version": "1.4.2",
+  "version": "1.4.3",
   "description": "connector retrieval server",
   "main": "lib/index.js",
   "scripts": {
