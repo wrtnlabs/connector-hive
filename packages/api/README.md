@@ -13,15 +13,15 @@ npm install @wrtnlabs/connector-hive-api
 ### Initialize the Client
 
 ```typescript
-import { createConnection } from "@wrtnlabs/connector-hive-api";
+import { IConnection } from "@wrtnlabs/connector-hive-api";
 
-const connection = createConnection({
+const connection: IConnection = {
   host: "http://localhost:37001",
   headers: {
     // Optional: If API_KEY is set on the server
     Authorization: "Bearer your_api_key",
   },
-});
+};
 ```
 
 ### Basic Usage Flow
@@ -30,21 +30,21 @@ Here's a complete example showing the typical flow of using the connector-hive A
 
 ```typescript
 import {
+  IConnection,
   applicationConnectors,
   applicationVersions,
   applications,
-  createConnection,
   health,
 } from "@wrtnlabs/connector-hive-api";
 
 async function main() {
   // 1. Initialize connection
-  const connection = createConnection({
+  const connection: IConnection = {
     host: "http://localhost:37001",
     headers: {
       Authorization: "Bearer your_api_key", // Optional
     },
-  });
+  };
 
   // 2. Check server health
   const healthStatus = await health.get(connection);
