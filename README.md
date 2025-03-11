@@ -21,7 +21,7 @@ docker run -d \
   -e POSTGRES_PASSWORD=your_password \
   -e POSTGRES_DB=your_database \
   -p 5432:5432 \
-  pgvector/pgvector
+  pgvector/pgvector:pg17
 ```
 
 #### Manual Installation
