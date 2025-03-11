@@ -17,7 +17,8 @@ export class AuthGuard implements CanActivate {
   ): boolean | Promise<boolean> | Observable<boolean> {
     const apiKey = ConnectorHiveConfiguration.API_KEY();
 
-    if (apiKey == null) {
+    // check null, undefined, empty string
+    if (!apiKey) {
       // API Key is not set, so we should allow all requests
       return true;
     }
