@@ -6,6 +6,7 @@ import {
 import { Prisma } from "@prisma/client";
 import { IApplicationVersion } from "@wrtnlabs/connector-hive-api/lib/structures/connector/IApplicationVersion";
 import { DbService } from "@wrtnlabs/connector-hive/modules/db/db.service";
+import { TooManyRequestsError } from "cohere-ai/api";
 import typia, { assertGuard } from "typia";
 
 /**
@@ -215,35 +216,51 @@ export class ApplicationVersionService {
   private async createWithAutoVersion(
     applicationId: string & typia.tags.Format<"uuid">,
   ): Promise<IApplicationVersion> {
-    const created = await this.db.$queryRaw`
-      INSERT INTO "public"."ApplicationVersion" (
-        "applicationId",
-        "version"
-      ) VALUES (
-        ${applicationId},
-        (
-          SELECT COALESCE(MAX("version"), 0) + 1
-          FROM "public"."ApplicationVersion"
-          WHERE "applicationId" = ${applicationId}
+    for (let attempt = 0; attempt < 10; ++attempt) {
+      const created = await this.db.$queryRaw`
+        INSERT INTO "public"."ApplicationVersion" (
+          "id",
+          "applicationId",
+          "version"
+        ) VALUES (
+          gen_random_uuid(),
+          ${applicationId}::uuid,
+          (
+            SELECT COALESCE(MAX("version"), 0) + 1
+            FROM "public"."ApplicationVersion"
+            WHERE "applicationId" = ${applicationId}::uuid
+          )
         )
-      )
-      RETURNING "id", "version", "createdAt"
-    `;
+        ON CONFLICT DO NOTHING
+        RETURNING "id", "version", "createdAt"
+      `;
 
-    interface IRawApplicationVersion {
-      id: string & typia.tags.Format<"uuid">;
-      version: number;
-      createdAt: Date;
+      interface IRawApplicationVersion {
+        id: string & typia.tags.Format<"uuid">;
+        version: number;
+        createdAt: Date;
+      }
+
+      assertGuard<IRawApplicationVersion[]>(created);
+
+      if (created.length === 0) {
+        await new Promise((resolve) =>
+          setTimeout(resolve, (attempt + 1) * 100 + Math.random() * 100),
+        );
+        continue;
+      }
+
+      return {
+        id: created[0].id,
+        applicationId,
+        version: created[0].version,
+        createdAt: created[0].createdAt.toISOString(),
+      };
     }
 
-    assertGuard<IRawApplicationVersion>(created);
-
-    return {
-      id: created.id,
-      applicationId,
-      version: created.version,
-      createdAt: created.createdAt.toISOString(),
-    };
+    throw new TooManyRequestsError(
+      "failed to create version due to multiple concurrent transactions; please retry later",
+    );
   }
 
   /**
