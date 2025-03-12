@@ -219,18 +219,20 @@ export class ApplicationVersionService {
     for (let attempt = 0; attempt < 10; ++attempt) {
       const created = await this.db.$queryRaw`
         INSERT INTO "public"."ApplicationVersion" (
+          "id",
           "applicationId",
           "version"
         ) VALUES (
-          ${applicationId},
+          gen_random_uuid(),
+          ${applicationId}::uuid,
           (
             SELECT COALESCE(MAX("version"), 0) + 1
             FROM "public"."ApplicationVersion"
-            WHERE "applicationId" = ${applicationId}
+            WHERE "applicationId" = ${applicationId}::uuid
           )
         )
-        RETURNING "id", "version", "createdAt"
         ON CONFLICT DO NOTHING
+        RETURNING "id", "version", "createdAt"
       `;
 
       interface IRawApplicationVersion {
