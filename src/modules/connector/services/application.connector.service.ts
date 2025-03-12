@@ -233,7 +233,7 @@ export class ApplicationConnectorService {
         // Instead, use `gen_random_uuid()` in the raw SQL to generate a valid UUID manually.
         await db.$executeRaw`
           INSERT INTO "public"."ApplicationConnectorIndex" ("id", "connectorId", "query", "embedding")
-          VALUES (gen_random_uuid(), ${created.id}::uuid, ${query}::text, ${embedding}::extensions.halfvec(384))
+          VALUES (gen_random_uuid(), ${created.id}::uuid, ${query}, ${JSON.stringify(embedding)}::extensions.halfvec(384))
         `;
 
         return {
