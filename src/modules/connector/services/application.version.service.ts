@@ -1,11 +1,13 @@
 import {
   ConflictException,
   Injectable,
+  InternalServerErrorException,
   NotFoundException,
 } from "@nestjs/common";
 import { Prisma } from "@prisma/client";
 import { IApplicationVersion } from "@wrtnlabs/connector-hive-api/lib/structures/connector/IApplicationVersion";
 import { DbService } from "@wrtnlabs/connector-hive/modules/db/db.service";
+import { TooManyRequestsError } from "cohere-ai/api";
 import typia, { assertGuard } from "typia";
 
 /**
@@ -215,35 +217,62 @@ export class ApplicationVersionService {
   private async createWithAutoVersion(
     applicationId: string & typia.tags.Format<"uuid">,
   ): Promise<IApplicationVersion> {
-    const created = await this.db.$queryRaw`
-      INSERT INTO "public"."ApplicationVersion" (
-        "applicationId",
-        "version"
-      ) VALUES (
-        ${applicationId},
-        (
-          SELECT COALESCE(MAX("version"), 0) + 1
-          FROM "public"."ApplicationVersion"
-          WHERE "applicationId" = ${applicationId}
-        )
-      )
-      RETURNING "id", "version", "createdAt"
-    `;
+    for (let attempt = 0; attempt < 5; ++attempt) {
+      try {
+        return this.db.$transaction(
+          async (db) => {
+            const created = await db.$queryRaw`
+            INSERT INTO "public"."ApplicationVersion" (
+              "applicationId",
+              "version"
+            ) VALUES (
+              ${applicationId},
+              (
+                SELECT COALESCE(MAX("version"), 0) + 1
+                FROM "public"."ApplicationVersion"
+                WHERE "applicationId" = ${applicationId}
+              )
+            )
+            RETURNING "id", "version", "createdAt"
+          `;
 
-    interface IRawApplicationVersion {
-      id: string & typia.tags.Format<"uuid">;
-      version: number;
-      createdAt: Date;
+            interface IRawApplicationVersion {
+              id: string & typia.tags.Format<"uuid">;
+              version: number;
+              createdAt: Date;
+            }
+
+            assertGuard<[IRawApplicationVersion]>(created);
+
+            return {
+              id: created[0].id,
+              applicationId,
+              version: created[0].version,
+              createdAt: created[0].createdAt.toISOString(),
+            };
+          },
+          {
+            isolationLevel: Prisma.TransactionIsolationLevel.Serializable,
+          },
+        );
+      } catch (error: unknown) {
+        if (
+          error instanceof Prisma.PrismaClientKnownRequestError &&
+          error.code === "P2034"
+        ) {
+          await new Promise((resolve) =>
+            setTimeout(resolve, Math.random() * 100),
+          );
+          continue;
+        }
+
+        throw error;
+      }
     }
 
-    assertGuard<IRawApplicationVersion>(created);
-
-    return {
-      id: created.id,
-      applicationId,
-      version: created.version,
-      createdAt: created.createdAt.toISOString(),
-    };
+    throw new TooManyRequestsError(
+      "failed to create version due to multiple concurrent transactions; please retry later",
+    );
   }
 
   /**
