@@ -216,57 +216,44 @@ export class ApplicationVersionService {
   private async createWithAutoVersion(
     applicationId: string & typia.tags.Format<"uuid">,
   ): Promise<IApplicationVersion> {
-    for (let attempt = 0; attempt < 5; ++attempt) {
-      try {
-        return this.db.$transaction(
-          async (db) => {
-            const created = await db.$queryRaw`
-              INSERT INTO "public"."ApplicationVersion" (
-                "applicationId",
-                "version"
-              ) VALUES (
-                ${applicationId},
-                (
-                  SELECT COALESCE(MAX("version"), 0) + 1
-                  FROM "public"."ApplicationVersion"
-                  WHERE "applicationId" = ${applicationId}
-                )
-              )
-              RETURNING "id", "version", "createdAt"
-            `;
+    for (let attempt = 0; attempt < 10; ++attempt) {
+      const created = await this.db.$queryRaw`
+        INSERT INTO "public"."ApplicationVersion" (
+          "applicationId",
+          "version"
+        ) VALUES (
+          ${applicationId},
+          (
+            SELECT COALESCE(MAX("version"), 0) + 1
+            FROM "public"."ApplicationVersion"
+            WHERE "applicationId" = ${applicationId}
+          )
+        )
+        RETURNING "id", "version", "createdAt"
+        ON CONFLICT DO NOTHING
+      `;
 
-            interface IRawApplicationVersion {
-              id: string & typia.tags.Format<"uuid">;
-              version: number;
-              createdAt: Date;
-            }
-
-            assertGuard<[IRawApplicationVersion]>(created);
-
-            return {
-              id: created[0].id,
-              applicationId,
-              version: created[0].version,
-              createdAt: created[0].createdAt.toISOString(),
-            };
-          },
-          {
-            isolationLevel: Prisma.TransactionIsolationLevel.Serializable,
-          },
-        );
-      } catch (error: unknown) {
-        if (
-          error instanceof Prisma.PrismaClientKnownRequestError &&
-          error.code === "P2034"
-        ) {
-          await new Promise((resolve) =>
-            setTimeout(resolve, Math.random() * 100),
-          );
-          continue;
-        }
-
-        throw error;
+      interface IRawApplicationVersion {
+        id: string & typia.tags.Format<"uuid">;
+        version: number;
+        createdAt: Date;
       }
+
+      assertGuard<IRawApplicationVersion[]>(created);
+
+      if (created.length === 0) {
+        await new Promise((resolve) =>
+          setTimeout(resolve, (attempt + 1) * 100 + Math.random() * 100),
+        );
+        continue;
+      }
+
+      return {
+        id: created[0].id,
+        applicationId,
+        version: created[0].version,
+        createdAt: created[0].createdAt.toISOString(),
+      };
     }
 
     throw new TooManyRequestsError(
