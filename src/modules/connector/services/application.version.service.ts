@@ -221,19 +221,19 @@ export class ApplicationVersionService {
         return this.db.$transaction(
           async (db) => {
             const created = await db.$queryRaw`
-            INSERT INTO "public"."ApplicationVersion" (
-              "applicationId",
-              "version"
-            ) VALUES (
-              ${applicationId},
-              (
-                SELECT COALESCE(MAX("version"), 0) + 1
-                FROM "public"."ApplicationVersion"
-                WHERE "applicationId" = ${applicationId}
+              INSERT INTO "public"."ApplicationVersion" (
+                "applicationId",
+                "version"
+              ) VALUES (
+                ${applicationId},
+                (
+                  SELECT COALESCE(MAX("version"), 0) + 1
+                  FROM "public"."ApplicationVersion"
+                  WHERE "applicationId" = ${applicationId}
+                )
               )
-            )
-            RETURNING "id", "version", "createdAt"
-          `;
+              RETURNING "id", "version", "createdAt"
+            `;
 
             interface IRawApplicationVersion {
               id: string & typia.tags.Format<"uuid">;
