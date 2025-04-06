@@ -1,6 +1,6 @@
 {
   "name": "@wrtnlabs/connector-hive",
-  "version": "1.4.5",
+  "version": "1.5.0",
   "description": "connector retrieval server",
   "main": "lib/index.js",
   "scripts": {
@@ -40,9 +40,9 @@
   },
   "homepage": "https://github.com/wrtnlabs/connector-hive#readme",
   "devDependencies": {
-    "@nestia/benchmark": "^0.3.0",
-    "@nestia/e2e": "^0.8.2",
-    "@nestia/sdk": "^5.0.0",
+    "@nestia/benchmark": "^6.0.1",
+    "@nestia/e2e": "^6.0.1",
+    "@nestia/sdk": "^6.0.1",
     "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-typescript": "^12.1.2",
     "@trivago/prettier-plugin-sort-imports": "^5.2.2",
@@ -79,8 +79,8 @@
   },
   "dependencies": {
     "@inquirer/prompts": "^7.3.2",
-    "@nestia/core": "^5.0.0",
-    "@nestia/fetcher": "^5.0.0",
+    "@nestia/core": "^6.0.1",
+    "@nestia/fetcher": "^6.0.1",
     "@nestjs/common": "^11.0.9",
     "@nestjs/core": "^11.0.9",
     "@nestjs/platform-express": "^11.0.9",
@@ -94,7 +94,7 @@
     "serialize-error": "^12.0.0",
     "tgrid": "^1.0.2",
     "tstl": "^3.0.0",
-    "typia": "^8.0.0",
+    "typia": "^9.0.1",
     "utf-8-validate": "^6.0.5",
     "uuid": "^11.0.5"
   },
